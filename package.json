@@ -1,7 +1,7 @@
 {
   "name": "nextup",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,13 @@
     "lint": "eslint .",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "version": "npm run format:version && git add -A",
+    "release": "npm version",
+    "release:patch": "npm version patch",
+    "release:minor": "npm version minor",
+    "release:major": "npm version major",
+    "format:version": "node scripts/sync-version.js"
   },
   "dependencies": {
     "@tauri-apps/plugin-shell": "^2.3.4",

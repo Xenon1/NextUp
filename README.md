@@ -1,8 +1,8 @@
 # 🎬 NextUp - Watch List Tracker
 
-A beautiful Windows desktop application to track your movies, TV shows, and anime. Built with Tauri, React, TypeScript, and powered by The Movie Database (TMDB) API.
+A beautiful Windows desktop application to track your movies, TV shows, and Anime. Built with Tauri, React and TypeScript
 
-**[View on GitHub](https://github.com/YOUR_USERNAME/NextUp)** • **[Getting Started](#getting-started)** • **[Features](#features)**
+**[Getting Started](#getting-started)** • **[Features](#features)**
 
 ## Features
 
@@ -10,13 +10,10 @@ A beautiful Windows desktop application to track your movies, TV shows, and anim
 - 🔍 **Search & Discover** - Real-time search for movies, TV shows, and anime powered by TMDB
 - 📋 **Smart Status System** - 6 statuses: Plan to Watch, Watching, Waiting for Next Ep, On Hold, Dropped, Completed
 - 📺 **Episode Tracking** - Built-in tracking for TV show and anime seasons/episodes
-- ⭐ **Rich Details** - Ratings, synopses, release dates, and more from TMDB
 - 🎬 **Auto-Transitions** - TV shows automatically transition to "Waiting for Next Episode" based on air dates
 - 💾 **Complete Privacy** - All data stored locally (no cloud, no accounts, no tracking)
 - 🔐 **Secure API Key Management** - First-run setup modal, config stored locally, never exposed
-- 🎨 **Beautiful Dark UI** - Modern, responsive dark mode interface
 - ⚡ **Real-time Search** - Debounced search with instant results
-- 🌐 **Live Data** - Always current information from The Movie Database (TMDB)
 
 ## Tech Stack
 

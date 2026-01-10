@@ -1,0 +1,71 @@
+name: Tests & Build
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm run test -- --run
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Lint
+        run: npm run lint
+
+  build-desktop:
+    needs: test
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Tauri app
+        run: npm run tauri-build
+      
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: NextUp-installer
+          path: src-tauri/target/release/bundle/msi/*.msi
+      
+      - name: Upload portable EXE artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: NextUp-portable
+          path: src-tauri/target/release/NextUp.exe
