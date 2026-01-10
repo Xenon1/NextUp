@@ -3,18 +3,24 @@ import { SearchComponent } from './components/SearchComponent'
 import { WatchlistComponent } from './components/WatchlistComponent'
 import { DashboardComponent } from './components/DashboardComponent'
 import { ApiKeySetupModal } from './components/ApiKeySetupModal'
+import UpdateModal from './components/UpdateModal'
 import type { WatchlistItem } from './types'
+import type { Release } from './services/releaseService'
 import { WatchlistStorage } from './utils/watchlistStorage'
 import { configService } from './services/configService'
 import tmdbService from './services/tmdbService'
+import releaseService from './services/releaseService'
 import './App.css'
 
+const APP_VERSION = '0.1.0'
 type TabType = 'dashboard' | 'search' | 'movies' | 'tv' | 'anime'
 
 function App() {
   const [watchlist, setWatchlist] = useState<WatchlistItem[]>([])
   const [activeTab, setActiveTab] = useState<TabType>('dashboard')
   const [showApiKeySetup, setShowApiKeySetup] = useState(false)
+  const [showUpdateModal, setShowUpdateModal] = useState(false)
+  const [availableRelease, setAvailableRelease] = useState<Release | null>(null)
   const [loading, setLoading] = useState(true)
 
   // Load watchlist and API key on mount
@@ -32,6 +38,9 @@ function App() {
 
         const saved = await WatchlistStorage.getAll()
         setWatchlist(saved)
+
+        // Check for updates
+        checkForUpdates()
       } catch (err) {
         console.error('Error initializing app:', err)
       } finally {
@@ -41,6 +50,18 @@ function App() {
     
     initializeApp()
   }, [])
+
+  const checkForUpdates = async () => {
+    try {
+      const newRelease = await releaseService.checkForUpdate(APP_VERSION)
+      if (newRelease) {
+        setAvailableRelease(newRelease)
+        setShowUpdateModal(true)
+      }
+    } catch (err) {
+      console.error('Error checking for updates:', err)
+    }
+  }
 
   const handleApiKeySet = async (apiKey: string) => {
     tmdbService.setApiKey(apiKey)
@@ -157,6 +178,14 @@ function App() {
           </a>
         </p>
       </footer>
+
+      {showUpdateModal && availableRelease && (
+        <UpdateModal
+          release={availableRelease}
+          currentVersion={APP_VERSION}
+          onClose={() => setShowUpdateModal(false)}
+        />
+      )}
     </div>
   )
 }
