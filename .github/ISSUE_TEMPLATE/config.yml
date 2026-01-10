@@ -1,0 +1,14 @@
+---
+name: Config
+description: Configure issue templates
+title: Issue Templates
+---
+
+blank_issues_enabled: true
+contact_links:
+  - name: Questions & Discussions
+    url: https://github.com/Xenon1/NextUp/discussions
+    about: Ask questions and share ideas
+  - name: Check Documentation
+    url: https://github.com/Xenon1/NextUp/wiki
+    about: View setup guides and troubleshooting
