@@ -2,28 +2,34 @@
 
 A beautiful Windows desktop application to track your movies, TV shows, and anime. Built with Tauri, React, TypeScript, and powered by The Movie Database (TMDB) API.
 
+**[View on GitHub](https://github.com/YOUR_USERNAME/NextUp)** • **[Getting Started](#getting-started)** • **[Features](#features)**
+
 ## Features
 
 ✨ **Key Features:**
-- 🔍 Search and discover movies, TV shows, and anime
-- 📋 Organize items into 5 statuses: Plan to Watch, Watching, On Hold, Dropped, Completed
-- 📺 Episode & season tracking for TV shows and anime
-- ⭐ See ratings and detailed information for each item
-- 📝 Add personal notes to each entry
-- 💾 All data saved to your computer (no cloud, complete privacy)
-- 🎨 Beautiful dark mode UI
-- 🌐 Real data from The Movie Database (TMDB)
+- 🔍 **Search & Discover** - Real-time search for movies, TV shows, and anime powered by TMDB
+- 📋 **Smart Status System** - 6 statuses: Plan to Watch, Watching, Waiting for Next Ep, On Hold, Dropped, Completed
+- 📺 **Episode Tracking** - Built-in tracking for TV show and anime seasons/episodes
+- ⭐ **Rich Details** - Ratings, synopses, release dates, and more from TMDB
+- 🎬 **Auto-Transitions** - TV shows automatically transition to "Waiting for Next Episode" based on air dates
+- 💾 **Complete Privacy** - All data stored locally (no cloud, no accounts, no tracking)
+- 🔐 **Secure API Key Management** - First-run setup modal, config stored locally, never exposed
+- 🎨 **Beautiful Dark UI** - Modern, responsive dark mode interface
+- ⚡ **Real-time Search** - Debounced search with instant results
+- 🌐 **Live Data** - Always current information from The Movie Database (TMDB)
 
 ## Tech Stack
 
-- **Desktop Framework:** Tauri 2.0
-- **Frontend:** React 19 + TypeScript
-- **Build Tool:** Vite
-- **Backend:** Rust
-- **HTTP Client:** Axios
-- **API:** The Movie Database (TMDB) API
-- **Storage:** Local JSON files in `~/.nextup/watchlist.json`
+- **Desktop Framework:** Tauri 2.9.5 (secure, lightweight)
+- **Frontend:** React 19.2.0 + TypeScript 5.9.3
+- **Build Tool:** Vite 7.3.1 (lightning-fast builds)
+- **Backend:** Rust (performance & security)
+- **Testing:** Vitest 4.0.16 with @testing-library/react (76 tests, all passing)
+- **HTTP Client:** Axios (API requests)
+- **API:** The Movie Database (TMDB) v3
+- **Storage:** Local JSON files (~/.nextup/config.json, ~/.nextup/watchlist.json)
 - **Styling:** CSS3 with dark mode
+- **Linting:** ESLint with TypeScript support
 
 ## Getting Started
 
@@ -36,8 +42,9 @@ A beautiful Windows desktop application to track your movies, TV shows, and anim
 
 ### Installation
 
-1. **Navigate to the project:**
+1. **Clone the repository:**
    ```bash
+   git clone https://github.com/YOUR_USERNAME/NextUp.git
    cd NextUp
    ```
 
@@ -46,55 +53,48 @@ A beautiful Windows desktop application to track your movies, TV shows, and anim
    npm install
    ```
 
-3. **Create `.env.local` file in the project root:**
-   ```bash
-   # Copy the example file
-   cp .env.example .env.local
-   
-   # Or manually create .env.local with:
-   VITE_TMDB_API_KEY=your_actual_api_key_here
-   ```
-
-4. **Get your TMDB API Key:**
-   - Go to https://www.themoviedb.org/settings/api
-   - Sign up for a free account (if you don't have one)
-   - Request an API key
-   - Copy your API key to `.env.local`
-
-5. **Start the Tauri development server:**
+3. **Start the app:**
    ```bash
    npm run tauri-dev
    ```
-   This will compile the Rust backend and launch the desktop app window.
+   
+   **On first run:** You'll see a setup modal asking for your TMDB API key
+   - Go to https://www.themoviedb.org/settings/api to get a free API key
+   - Enter it in the modal
+   - The app securely saves it to `~/.nextup/config.json` (NOT in the repository)
 
-6. **Build a standalone executable:**
+4. **Build a standalone executable (optional):**
    ```bash
    npm run tauri-build
    ```
-   The built app will be in `src-tauri/target/release/bundle/msi/` (installable) or `src-tauri/target/release/` (portable)
+   The installer will be in `src-tauri/target/release/bundle/msi/`
 
 ## Usage
 
 ### Search & Add Items
-1. Click on "🔍 Search & Add" tab
+1. Click the **"🔍 Search & Add"** tab
 2. Select media type: Movies, TV Shows, or Anime
-3. Enter your search query
-4. Browse results and click "Add to Watchlist"
+3. Enter search query (results appear as you type)
+4. Click an item to see details
+5. Click **"Add to Watchlist"** to save it
 
 ### Manage Your Watchlist
-1. Click on "📋 My Watchlist" tab
-2. View all your items organized by status
-3. Change status: Click dropdown to mark as "To Watch", "Watching", or "Watched"
-4. Add notes: Write personal notes about each item
-5. Remove items: Click "Remove from Watchlist" button
+1. Click the **"📋 My Watchlist"** tab
+2. Browse items organized by status
+3. **Change Status:** Click the status dropdown to update (Plan to Watch → Watching → Waiting for Next Ep, etc.)
+4. **Remove Items:** Click the trash icon or "Remove" button
+5. **Auto-Transitions:** TV shows automatically change status based on episode air dates
 
-### Dashboard Stats
-Your watchlist header shows:
-- **Total Items**: Number of items in your list
-- **To Watch**: Items you haven't started
-- **Watching**: Currently watching items
-- **Watched**: Completed items
-- **Avg Rating**: Average rating of all items
+### Dashboard
+The dashboard shows statistics:
+- **Up Next:** Items you're currently watching that haven't aired yet
+- **Airing Next:** Shows with upcoming episodes
+- **Status Breakdown:** Count of items in each status
+- **Average Rating:** Overall rating of your watchlist
+
+### Keyboard Shortcuts
+- Search field has auto-debouncing (300ms delay before API calls)
+- Click TMDB links to copy the URL to clipboard
 
 ## Project Structure
 
@@ -102,44 +102,96 @@ Your watchlist header shows:
 NextUp/
 ├── src/
 │   ├── components/
-│   │   ├── SearchComponent.tsx      # Search functionality
-│   │   ├── SearchComponent.css
-│   │   ├── WatchlistComponent.tsx   # Watchlist display
-│   │   └── WatchlistComponent.css
+│   │   ├── SearchComponent.tsx         # Search & discovery
+│   │   ├── WatchlistComponent.tsx      # Watchlist management
+│   │   ├── DashboardComponent.tsx      # Stats & overview
+│   │   ├── ApiKeySetupModal.tsx        # First-run setup
+│   │   └── *.css                       # Component styles
 │   ├── services/
-│   │   └── tmdbService.ts           # TMDB API integration
-│   ├── types/
-│   │   └── index.ts                 # TypeScript interfaces
+│   │   ├── tmdbService.ts             # TMDB API integration
+│   │   ├── configService.ts           # Secure config management
+│   │   └── watchlistStorage.ts        # Local data persistence
 │   ├── utils/
-│   │   └── watchlistStorage.ts      # Local storage management
-│   ├── App.tsx                      # Main App component
-│   ├── App.css
-│   ├── main.tsx
-│   └── index.css
-├── .env.example                     # Example environment variables
-├── package.json
-├── vite.config.ts
-├── tsconfig.json
-└── README.md
+│   │   ├── validation.ts              # Input validation
+│   │   ├── helpers.ts                 # Utility functions
+│   │   ├── statusManagement.ts        # Status logic
+│   │   └── formatUtils.ts             # Data formatting
+│   ├── types/
+│   │   └── index.ts                   # TypeScript interfaces
+│   ├── test/
+│   │   ├── *.test.ts                  # 76 unit tests
+│   │   ├── *.test.tsx                 # Component tests
+│   │   └── setup.ts                   # Test configuration
+│   ├── App.tsx                        # Main app component
+│   └── main.tsx                       # Entry point
+├── src-tauri/
+│   ├── src/
+│   │   └── lib.rs                     # Rust backend (config I/O)
+│   └── Cargo.toml                     # Rust dependencies
+├── public/                            # Static assets
+├── .github/                           # GitHub workflows (optional)
+├── vitest.config.ts                   # Test configuration
+├── vite.config.ts                     # Build configuration
+├── package.json                       # Dependencies & scripts
+├── tsconfig.json                      # TypeScript config
+└── README.md                          # This file
 ```
 
 ## Available Scripts
 
-- `npm run dev` - Start Vite dev server (used by Tauri)
-- `npm run build` - Build React app for production
-- `npm run tauri-dev` - Start Tauri development (compiles Rust + React)
-- `npm run tauri-build` - Build production desktop app executable
-- `npm run lint` - Run ESLint
+```bash
+npm run dev              # Start Vite dev server
+npm run build            # Build React app for production
+npm run tauri-dev        # Start Tauri dev (compiles Rust + React, launches app)
+npm run tauri-build      # Build production desktop installer
+npm run test             # Run test suite (Vitest watch mode)
+npm run test:ui          # Run tests with Vitest UI dashboard
+npm run lint             # Run ESLint checks
+```
+
+### Testing
+
+The project includes a comprehensive test suite with **76 tests**:
+
+```bash
+npm run test -- --run   # Run all tests once
+npm run test:ui         # View tests in browser dashboard
+```
+
+**Test Coverage:**
+- ✅ ApiKeySetupModal (6 tests)
+- ✅ SearchComponent (2 tests)
+- ✅ DashboardComponent (3 tests)
+- ✅ WatchlistComponent (5 tests)
+- ✅ TMDB Service (7 tests)
+- ✅ Config Service (5 tests)
+- ✅ Storage Service (4 tests)
+- ✅ Validation Utils (13 tests)
+- ✅ Helper Functions (12 tests)
+- ✅ Status Management (12 tests)
+
+See `TEST_SUITE_DOCUMENTATION.md` for detailed test information.
 
 ## Data Storage
 
-All your watchlist data is stored locally on your computer in a JSON file:
-- **Location:** `C:\Users\{YourUsername}\.nextup\watchlist.json`
-- ✅ Your data persists between app sessions
+All your data is stored **locally** on your computer:
+
+- **Config:** `C:\Users\{YourUsername}\.nextup\config.json` (API key)
+- **Watchlist:** `C:\Users\{YourUsername}\.nextup\watchlist.json` (all items & status)
+
+**Privacy & Security:**
+- ✅ All data stays on your computer - zero cloud storage
 - ✅ No account signup required
-- ✅ Complete privacy - nothing sent to external servers except TMDB API calls
-- ✅ Data survives browser cache clearing (it's not in the browser)
-- ✅ Easy to backup or transfer to another computer
+- ✅ API key stored locally, never exposed to the internet
+- ✅ Only TMDB API calls go over the network
+- ✅ Easy to backup: just copy the `~/.nextup/` folder
+- ✅ Easy to migrate: copy `~/.nextup/` to another computer
+
+**Configuration:**
+The API key is managed securely via Tauri's backend:
+- First run: Enter API key in setup modal
+- Stored: In `~/.nextup/config.json` (not in the repository)
+- Updated: Use the app's settings to change API key
 
 ## TMDB API
 
@@ -161,40 +213,96 @@ Planned improvements:
 
 ## Troubleshooting
 
-### "Invalid API Key" error
-- Ensure your TMDB API key is correctly set in `.env.local`
-- Restart the development server after updating `.env.local`
-- Check that `VITE_TMDB_API_KEY` is spelled correctly
+### App won't start or shows "API Key not found"
+- **First run:** Click the setup modal button and enter your TMDB API key
+- **After updates:** Delete `~/.nextup/config.json` and restart to reconfigure
+- **Verify key:** Go to https://www.themoviedb.org/settings/api to confirm your API key is valid
 
-### No search results
+### No search results appear
+- Verify your internet connection
+- Check that your TMDB API key is valid
 - Try a different search term
-- Check your internet connection
-- Verify TMDB API is working
+- TMDB rate limit: 40 requests per 10 seconds
 
-### Data not persisting
-- Check browser's Local Storage is enabled
-- Try clearing browser cache and restarting
-- Ensure you're not in private/incognito mode
+### App crashes or behaves unexpectedly
+- Try clearing the app's cache: Delete `~/.nextup/` and restart (you'll need to re-enter your API key)
+- Check that you're running the latest version
+- Open an issue on GitHub with error details
+
+### Tests fail locally
+1. Verify Node.js version: `node --version` (should be v16+)
+2. Clean install: `rm -r node_modules && npm install`
+3. Run tests: `npm run test -- --run`
+4. Check Rust: `rustc --version` (for Tauri builds)
+
+### Can't build the app
+1. Ensure Rust is installed: https://rust-lang.org/tools/install
+2. Update npm: `npm install -g npm@latest`
+3. Clean build: `npm run tauri-build`
 
 ## Contributing
 
-Feel free to fork this project and submit pull requests for any improvements!
+Found a bug or have an idea? Contributions are welcome!
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Development Guidelines
+- Run `npm run test -- --run` before submitting PR
+- Ensure `npm run build` succeeds
+- Keep commit messages descriptive
+- Add tests for new features
+- Update README if adding new features
+
+## Known Limitations
+
+- **Windows only** - Currently built for Windows (Tauri can be extended to macOS/Linux)
+- **TMDB free tier** - Limited to free API tier features
+- **Episode auto-tracking** - TV show status transitions based on air dates, not actual watching
+
+## Roadmap
+
+Future planned features:
+- 🌙 Light mode theme option
+- 📊 Advanced statistics and charts
+- 🎬 Integration with streaming platforms
+- 📱 Mobile app version
+- ☁️ Optional cloud sync with export/import
+- 🎯 Personalized recommendations
+- 📧 Email reminders for upcoming episodes
 
 ## License
 
-MIT License - Feel free to use this project for personal or commercial purposes.
+MIT License - Feel free to use this project for personal or commercial purposes. See LICENSE file for details.
 
-## Credits
+## Credits & Attributions
 
-- **Movie Data**: [The Movie Database (TMDB)](https://www.themoviedb.org/)
-- **Built with**: React, TypeScript, Vite
-- **Inspired by**: Modern watchlist applications
+- **Movie Database**: [The Movie Database (TMDB)](https://www.themoviedb.org/) - All movie, TV, and anime data
+- **Framework**: [Tauri](https://tauri.app/) - Secure, lightweight desktop framework
+- **Frontend**: [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/) - Lightning-fast frontend build tool
+- **Testing**: [Vitest](https://vitest.dev/) - Unit testing framework
+- **Inspiration**: Modern watchlist/tracking applications
+
+## Support & Questions
+
+- 📖 **Documentation:** Check [GITHUB_SETUP.md](GITHUB_SETUP.md) for GitHub setup, [QUICKSTART.md](QUICKSTART.md) for quick start
+- 🧪 **Tests:** See [TEST_SUITE_DOCUMENTATION.md](TEST_SUITE_DOCUMENTATION.md) for test details
+- 🐛 **Issues:** Open an issue on GitHub for bugs or features
+- 💬 **Discussions:** Use GitHub Discussions for questions or ideas
 
 ---
 
-**Made with ❤️ by Joe**
+**Made with ❤️**
 
-Need help? Open an issue or check the code comments for more details.
+If you found this project useful, please consider:
+- ⭐ Starring the repository
+- 🐛 Reporting bugs or suggesting features
+- 🤝 Contributing improvements
+- 📢 Sharing with others
 
 ```js
 export default defineConfig([
