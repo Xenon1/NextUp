@@ -32,19 +32,19 @@ describe('Validation Utils', () => {
         overview: 'Test',
         releaseDate: '2024-01-01',
         rating: 8,
-        addedDate: '2024-01-01',
+        addedDate: 1704067200000,
       };
       
       expect(validateWatchlistItem(item)).toBe(true);
     });
 
     it('should reject incomplete watchlist item', () => {
-      const item = {
+      const item: Partial<WatchlistItem> = {
         id: '1',
         title: 'Test',
       };
       
-      expect(validateWatchlistItem(item)).toBe(false);
+      expect(validateWatchlistItem(item as WatchlistItem)).toBe(false);
     });
   });
 
