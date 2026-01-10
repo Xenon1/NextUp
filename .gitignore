@@ -42,4 +42,3 @@ src-tauri/target/
 
 # Release and changelog (local use only)
 RELEASE.md
-CHANGELOG.md
