@@ -1,10 +1,11 @@
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
+import type { WatchlistItem } from '../types';
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 interface SearchResponse {
-  results: any[];
+  results: WatchlistItem[];
   total_results: number;
   total_pages: number;
 }
@@ -94,7 +95,11 @@ class TMDBService {
       const tvData = response.data;
       
       // Extract season information from the response
-      const seasons = tvData.seasons?.map((season: any) => ({
+      interface SeasonData {
+        season_number: number;
+        episode_count: number;
+      }
+      const seasons = tvData.seasons?.map((season: SeasonData) => ({
         season: season.season_number,
         episodes: season.episode_count,
       })) || [];

@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
+import type { WatchlistItem } from '../types';
 
 // Test data validation utility
-export function validateWatchlistItem(item: any): boolean {
+export function validateWatchlistItem(item: WatchlistItem): boolean {
   const required = ['id', 'title', 'mediaType', 'status', 'tmdbId', 'overview', 'releaseDate', 'rating', 'addedDate'];
   return required.every(field => field in item);
 }

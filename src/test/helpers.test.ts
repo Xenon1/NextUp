@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import type { WatchlistItem } from '../types';
 
 // Helper functions for common operations
 export function calculateItemProgress(currentEpisode: number, totalEpisodes: number): number {
@@ -6,11 +7,11 @@ export function calculateItemProgress(currentEpisode: number, totalEpisodes: num
   return Math.round((currentEpisode / totalEpisodes) * 100);
 }
 
-export function getItemsByStatus(items: any[], status: string): any[] {
+export function getItemsByStatus(items: WatchlistItem[], status: string): WatchlistItem[] {
   return items.filter(item => item.status === status);
 }
 
-export function sortItemsByDate(items: any[], ascending = true): any[] {
+export function sortItemsByDate(items: WatchlistItem[], ascending = true): WatchlistItem[] {
   return [...items].sort((a, b) => {
     const dateA = new Date(a.addedDate).getTime();
     const dateB = new Date(b.addedDate).getTime();

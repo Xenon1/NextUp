@@ -32,20 +32,6 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
   }, []);
 
   // Debounced real-time search
-  useEffect(() => {
-    if (!searchQuery.trim()) {
-      setResults([]);
-      setError('');
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      handleSearch(1);
-    }, 500); // Wait 500ms after user stops typing
-
-    return () => clearTimeout(timer);
-  }, [searchQuery, mediaType]);
-
   const handleSearch = useCallback(async (searchPage: number = 1) => {
     if (!searchQuery.trim()) {
       return;
@@ -68,13 +54,27 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
       setResults(response.results);
       setTotalPages(response.total_pages);
       setPage(searchPage);
-    } catch (err) {
+    } catch {
       setError('Failed to search. Make sure your TMDB API key is valid.');
       setResults([]);
     } finally {
       setLoading(false);
     }
   }, [searchQuery, mediaType]);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setResults([]);
+      setError('');
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      handleSearch(1);
+    }, 500); // Wait 500ms after user stops typing
+
+    return () => clearTimeout(timer);
+  }, [searchQuery, mediaType, handleSearch]);
 
   const handleAddToWatchlist = async (item: TMDBMovie | TMDBTVShow, status: 'plan-to-watch' | 'watching' | 'waiting-for-next-ep' | 'on-hold' | 'dropped' | 'completed') => {
     const isTVShow = 'name' in item;
@@ -334,7 +334,7 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
                 <label>Status:</label>
                 <select
                   value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value as any)}
+                  onChange={(e) => setSelectedStatus(e.target.value as WatchlistItem['status'])}
                   className="status-select"
                 >
                   <option value="plan-to-watch">📋 Plan to watch</option>

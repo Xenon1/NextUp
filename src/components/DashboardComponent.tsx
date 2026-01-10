@@ -88,7 +88,7 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
     if (waitingItems.length > 0) {
       fetchAirDates();
     }
-  }, [waitingItems]);
+  }, [waitingItems, onUpdate]);
 
   const handleMarkWatched = async (item: WatchlistItem) => {
     const currentSeason = item.currentSeason || 1;
@@ -372,7 +372,7 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
                 <select
                   value={selectedItem.status}
                   onChange={(e) => {
-                    const newStatus = e.target.value as any;
+                    const newStatus = e.target.value as WatchlistItem['status'];
                     const updated = { ...selectedItem, status: newStatus };
                     WatchlistStorage.save(updated);
                     onUpdate(updated);

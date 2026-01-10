@@ -11,6 +11,142 @@ interface WatchlistComponentProps {
   onRemove: (id: string) => void;
 }
 
+interface DetailPanelProps {
+  item: WatchlistItem;
+  mediaType: 'movie' | 'tv' | 'anime';
+  onClose: () => void;
+  onStatusChange: (item: WatchlistItem, newStatus: WatchlistItem['status']) => Promise<void>;
+  onNotesChange: (item: WatchlistItem, notes: string) => Promise<void>;
+  onRemove: (id: string) => Promise<void>;
+  onCurrentSeasonChange: (item: WatchlistItem, season: number) => Promise<void>;
+  onCurrentEpisodeChange: (item: WatchlistItem, episode: number) => Promise<void>;
+  onIncrementEpisode: (item: WatchlistItem) => Promise<void>;
+}
+
+// Move DetailPanel outside of component
+const DetailPanel = ({
+  item,
+  mediaType,
+  onClose,
+  onStatusChange,
+  onNotesChange,
+  onRemove,
+  onCurrentSeasonChange,
+  onCurrentEpisodeChange,
+  onIncrementEpisode,
+}: DetailPanelProps) => (
+  <div className="detail-modal-overlay" onClick={onClose}>
+    <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
+      <button 
+        className="detail-close-button" 
+        onClick={onClose}
+      >
+        ✕
+      </button>
+      
+      <div className="detail-poster">
+        <img
+          src={tmdbService.getImageUrl(item.posterPath || '', 300)}
+          alt={item.title}
+          className="detail-poster-image"
+        />
+      </div>
+
+      <div className="detail-content">
+        <h3 className="detail-title">{item.title}</h3>
+
+        <div className="detail-status-selector">
+          <label>Status:</label>
+          <select
+            value={item.status}
+            onChange={(e) => onStatusChange(item, e.target.value as WatchlistItem['status'])}
+            className="status-select"
+          >
+            <option value="plan-to-watch">📋 Plan to watch</option>
+            <option value="watching">👀 Watching</option>
+            {(mediaType === 'tv' || mediaType === 'anime') && (
+              <option value="waiting-for-next-ep">⏳ Waiting for next episode</option>
+            )}
+            <option value="on-hold">⏸️ On Hold</option>
+            <option value="dropped">🚫 Dropped</option>
+            <option value="completed">✅ Completed</option>
+          </select>
+        </div>
+
+        {(mediaType === 'tv' || mediaType === 'anime') && item.seasons && item.seasons.length > 0 && (
+          <div className="detail-episode-tracker">
+            <div className="tracker-controls">
+              <div className="control-group">
+                <label>Season:</label>
+                <select
+                  value={item.currentSeason || 1}
+                  onChange={(e) => onCurrentSeasonChange(item, parseInt(e.target.value))}
+                  className="season-select"
+                >
+                  {item.seasons.map((season) => (
+                    <option key={season.season} value={season.season}>
+                      Season {season.season}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="control-group">
+                <label>Episode:</label>
+                <select
+                  value={item.currentEpisode || 0}
+                  onChange={(e) => onCurrentEpisodeChange(item, parseInt(e.target.value))}
+                  className="episode-select"
+                >
+                  <option value={0}>Select Episode</option>
+                  {Array.from({ length: (item.seasons.find(s => s.season === (item.currentSeason || 1))?.episodes || 0) }).map((_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      Episode {i + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <button
+                onClick={() => onIncrementEpisode(item)}
+                className="next-button"
+                title="Mark episode as watched and advance"
+              >
+                ➕ Next
+              </button>
+            </div>
+
+            {item.currentSeason && (item.currentEpisode ?? 0) > 0 && item.status !== 'completed' && (
+              <div className="watch-status">
+                Currently watching: Season {item.currentSeason}, Episode {item.currentEpisode}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="detail-notes">
+          <textarea
+            value={item.notes || ''}
+            onChange={(e) => onNotesChange(item, e.target.value)}
+            placeholder="Add notes about this item..."
+            className="notes-textarea"
+          />
+        </div>
+
+        <button
+          onClick={() => {
+            onRemove(item.id);
+            onClose();
+          }}
+          className="remove-button"
+        >
+          🗑️ Remove from Watchlist
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
 export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: WatchlistComponentProps) {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
@@ -140,119 +276,6 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
     </div>
   );
 
-  const DetailPanel = ({ item }: { item: WatchlistItem }) => (
-    <div className="detail-modal-overlay" onClick={() => setSelectedItem(null)}>
-      <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
-        <button 
-          className="detail-close-button" 
-          onClick={() => setSelectedItem(null)}
-        >
-          ✕
-        </button>
-        
-        <div className="detail-poster">
-          <img
-            src={tmdbService.getImageUrl(item.posterPath || '', 300)}
-            alt={item.title}
-            className="detail-poster-image"
-          />
-        </div>
-
-        <div className="detail-content">
-          <h3 className="detail-title">{item.title}</h3>
-
-          <div className="detail-status-selector">
-            <label>Status:</label>
-            <select
-              value={item.status}
-              onChange={(e) => handleStatusChange(item, e.target.value as any)}
-              className="status-select"
-            >
-              <option value="plan-to-watch">📋 Plan to watch</option>
-              <option value="watching">👀 Watching</option>
-              {(mediaType === 'tv' || mediaType === 'anime') && (
-                <option value="waiting-for-next-ep">⏳ Waiting for next episode</option>
-              )}
-              <option value="on-hold">⏸️ On Hold</option>
-              <option value="dropped">🚫 Dropped</option>
-              <option value="completed">✅ Completed</option>
-            </select>
-          </div>
-
-          {(mediaType === 'tv' || mediaType === 'anime') && item.seasons && item.seasons.length > 0 && (
-            <div className="detail-episode-tracker">
-              <div className="tracker-controls">
-                <div className="control-group">
-                  <label>Season:</label>
-                  <select
-                    value={item.currentSeason || 1}
-                    onChange={(e) => handleCurrentSeasonChange(item, parseInt(e.target.value))}
-                    className="season-select"
-                  >
-                    {item.seasons.map((season) => (
-                      <option key={season.season} value={season.season}>
-                        Season {season.season}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="control-group">
-                  <label>Episode:</label>
-                  <select
-                    value={item.currentEpisode || 0}
-                    onChange={(e) => handleCurrentEpisodeChange(item, parseInt(e.target.value))}
-                    className="episode-select"
-                  >
-                    <option value={0}>Select Episode</option>
-                    {Array.from({ length: (item.seasons.find(s => s.season === (item.currentSeason || 1))?.episodes || 0) }).map((_, i) => (
-                      <option key={i + 1} value={i + 1}>
-                        Episode {i + 1}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <button
-                  onClick={() => incrementEpisode(item)}
-                  className="next-button"
-                  title="Mark episode as watched and advance"
-                >
-                  ➕ Next
-                </button>
-              </div>
-
-              {item.currentSeason && (item.currentEpisode ?? 0) > 0 && item.status !== 'completed' && (
-                <div className="watch-status">
-                  Currently watching: Season {item.currentSeason}, Episode {item.currentEpisode}
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className="detail-notes">
-            <textarea
-              value={item.notes || ''}
-              onChange={(e) => handleNotesChange(item, e.target.value)}
-              placeholder="Add notes about this item..."
-              className="notes-textarea"
-            />
-          </div>
-
-          <button
-            onClick={() => {
-              handleRemove(item.id);
-              setSelectedItem(null);
-            }}
-            className="remove-button"
-          >
-            🗑️ Remove from Watchlist
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="watchlist-container">
       <div className="watchlist-header">
@@ -372,7 +395,19 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
         </div>
       )}
 
-      {selectedItem && <DetailPanel item={items.find(i => i.id === selectedItem)!} />}
+      {selectedItem && (
+        <DetailPanel
+          item={items.find(i => i.id === selectedItem)!}
+          mediaType={mediaType}
+          onClose={() => setSelectedItem(null)}
+          onStatusChange={handleStatusChange}
+          onNotesChange={handleNotesChange}
+          onRemove={handleRemove}
+          onCurrentSeasonChange={handleCurrentSeasonChange}
+          onCurrentEpisodeChange={handleCurrentEpisodeChange}
+          onIncrementEpisode={incrementEpisode}
+        />
+      )}
     </div>
   );
 }
