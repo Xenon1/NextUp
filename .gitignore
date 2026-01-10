@@ -39,3 +39,7 @@ src-tauri/target/
 *.swp
 *.swo
 *~
+
+# Release and changelog (local use only)
+RELEASE.md
+CHANGELOG.md
