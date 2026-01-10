@@ -51,10 +51,10 @@ describe('Helper Utils', () => {
   });
 
   describe('getItemsByStatus', () => {
-    const items = [
-      { id: '1', status: 'watching' },
-      { id: '2', status: 'plan-to-watch' },
-      { id: '3', status: 'watching' },
+    const items: WatchlistItem[] = [
+      { id: '1', tmdbId: 1, mediaType: 'movie', title: 'Movie 1', status: 'watching', posterPath: '/path', overview: 'Test', releaseDate: '2024-01-01', rating: 8, addedDate: '2024-01-01' },
+      { id: '2', tmdbId: 2, mediaType: 'tv', title: 'TV 1', status: 'plan-to-watch', posterPath: '/path', overview: 'Test', releaseDate: '2024-01-01', rating: 8, addedDate: '2024-01-02' },
+      { id: '3', tmdbId: 3, mediaType: 'movie', title: 'Movie 2', status: 'watching', posterPath: '/path', overview: 'Test', releaseDate: '2024-01-01', rating: 8, addedDate: '2024-01-03' },
     ];
 
     it('should filter items by status', () => {
@@ -71,10 +71,10 @@ describe('Helper Utils', () => {
   });
 
   describe('sortItemsByDate', () => {
-    const items = [
-      { id: '1', addedDate: '2024-01-03' },
-      { id: '2', addedDate: '2024-01-01' },
-      { id: '3', addedDate: '2024-01-02' },
+    const items: WatchlistItem[] = [
+      { id: '1', tmdbId: 1, mediaType: 'movie', title: 'Movie 1', status: 'watching', posterPath: '/path', overview: 'Test', releaseDate: '2024-01-01', rating: 8, addedDate: '2024-01-03' },
+      { id: '2', tmdbId: 2, mediaType: 'tv', title: 'TV 1', status: 'plan-to-watch', posterPath: '/path', overview: 'Test', releaseDate: '2024-01-01', rating: 8, addedDate: '2024-01-01' },
+      { id: '3', tmdbId: 3, mediaType: 'movie', title: 'Movie 2', status: 'watching', posterPath: '/path', overview: 'Test', releaseDate: '2024-01-01', rating: 8, addedDate: '2024-01-02' },
     ];
 
     it('should sort items ascending by date', () => {

@@ -22,16 +22,17 @@ export function isValidMediaType(mediaType: string): boolean {
 describe('Validation Utils', () => {
   describe('validateWatchlistItem', () => {
     it('should validate complete watchlist item', () => {
-      const item = {
+      const item: WatchlistItem = {
         id: '1',
         title: 'Test',
         mediaType: 'movie',
         status: 'watching',
         tmdbId: 123,
+        posterPath: '/path',
         overview: 'Test',
         releaseDate: '2024-01-01',
         rating: 8,
-        addedDate: Date.now(),
+        addedDate: '2024-01-01',
       };
       
       expect(validateWatchlistItem(item)).toBe(true);
