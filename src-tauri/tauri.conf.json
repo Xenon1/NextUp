@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "nextup",
   "version": "0.2.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.nextup.app",
   "build": {
     "frontendDist": "../build",
     "devUrl": "http://localhost:5174",
@@ -38,6 +38,5 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
-  },
-  "productVersion": "0.2.1"
+  }
 }

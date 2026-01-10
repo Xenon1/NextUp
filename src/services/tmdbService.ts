@@ -1,11 +1,11 @@
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
-import type { WatchlistItem } from '../types';
+import type { TMDBMovie, TMDBTVShow } from '../types';
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 interface SearchResponse {
-  results: WatchlistItem[];
+  results: TMDBMovie[] | TMDBTVShow[];
   total_results: number;
   total_pages: number;
 }
