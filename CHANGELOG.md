@@ -21,6 +21,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.2] - 2026-01-10
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- Fixed build errors
+
+### Removed
+- 
+
+---
+
 ## [0.2.1] - 2026-01-10
 
 ### Added
