@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Release } from '../services/releaseService';
+import type { Release } from '../services/releaseService';
 import './UpdateModal.css';
 
 interface UpdateModalProps {
