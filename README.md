@@ -41,7 +41,7 @@ A beautiful Windows desktop application to track your movies, TV shows, and Anim
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/NextUp.git
+   git clone https://github.com/Xenon1/NextUp.git
    cd NextUp
    ```
 
