@@ -120,7 +120,11 @@
   color: #999;
 }
 
-.changelog-section h3 {
+.changelog-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
   margin: 0 0 8px 0;
   font-size: 14px;
   color: #ffffff;
@@ -128,18 +132,56 @@
 }
 
 .changelog-preview {
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  border-left: 3px solid #ff6b6b;
   font-size: 13px;
   color: #ccc;
-  line-height: 1.5;
-  max-height: 120px;
+  line-height: 1.6;
+  max-height: 180px;
   overflow-y: auto;
-  font-family: 'Monaco', 'Courier New', monospace;
-  white-space: pre-wrap;
-  word-break: break-word;
+}
+
+.changelog-preview h2 {
+  margin: 12px 0 8px 0;
+  font-size: 14px;
+  color: #ff6b6b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.changelog-preview h2:first-child {
+  margin-top: 0;
+}
+
+.changelog-preview h3 {
+  margin: 10px 0 6px 0;
+  font-size: 13px;
+  color: #ff8787;
+  font-weight: 600;
+}
+
+.changelog-preview p {
+  margin: 4px 0;
+}
+
+.changelog-preview ul,
+.changelog-preview li {
+  margin: 4px 0;
+  padding-left: 20px;
+}
+
+.changelog-preview li {
+  list-style: disc;
+}
+
+.changelog-preview a {
+  color: #ff6b6b;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.changelog-preview a:hover {
+  color: #ff7777;
+  text-decoration: underline;
 }
 
 .update-modal-actions {

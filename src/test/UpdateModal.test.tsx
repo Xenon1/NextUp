@@ -12,7 +12,7 @@ describe('UpdateModal', () => {
   const mockRelease: Release = {
     tag_name: 'v0.2.0',
     name: 'Version 0.2.0',
-    body: 'Major new features:\n- New light mode\n- Performance improvements',
+    body: '## What\'s New\nMajor new features:\n- New light mode\n- Performance improvements\n\n## What\'s Changed\n- Bug fixes and improvements',
     html_url: 'https://github.com/Xenon1/NextUp/releases/tag/v0.2.0',
     published_at: '2026-01-15T00:00:00Z',
   };

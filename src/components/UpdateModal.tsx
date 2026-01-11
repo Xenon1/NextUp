@@ -15,19 +15,12 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const newVersion = release.tag_name.replace(/^v/, '');
-  const changelogUrl = release.html_url;
+  const releaseUrl = 'https://github.com/Xenon1/NextUp/releases/latest';
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(changelogUrl);
+    navigator.clipboard.writeText(releaseUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const handleOpenRelease = () => {
-    // Copy link and open (since we can't use shell plugin)
-    handleCopyLink();
-    // Show notification that link is copied
-    alert(`Changelog link copied! Open it in your browser:\n\n${changelogUrl}`);
   };
 
   return (
@@ -59,48 +52,95 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
             </p>
 
             <div className="changelog-section">
-              <h3>What's New:</h3>
               <div className="changelog-preview">
                 {release.body
-                  ? release.body.substring(0, 300)
+                  ? (() => {
+                      const lines = release.body.split('\n');
+                      const filtered: string[] = [];
+                      let captureContent = false;
+
+                      for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i];
+                        const trimmed = line.trim().toLowerCase();
+                        const isHeading = line.trim().startsWith('#');
+
+                        // Start capturing for WHAT'S NEW or WHAT'S CHANGED
+                        if (isHeading && (trimmed.includes("what's new") || trimmed.includes("what's changed"))) {
+                          captureContent = true;
+                          filtered.push(line);
+                        } 
+                        // Stop capturing when we hit a different heading
+                        else if (captureContent && isHeading && !trimmed.includes("what's new") && !trimmed.includes("what's changed")) {
+                          captureContent = false;
+                        }
+                        // Add content if we're in a capture section
+                        else if (captureContent) {
+                          filtered.push(line);
+                        }
+                      }
+
+                      // Render the filtered content with proper grouping
+                      const elements: React.ReactNode[] = [];
+                      let ulItems: React.ReactNode[] = [];
+
+                      filtered.forEach((line, idx) => {
+                        if (line.trim().startsWith('##')) {
+                          if (ulItems.length > 0) {
+                            elements.push(<ul key={`ul-${idx}`}>{ulItems}</ul>);
+                            ulItems = [];
+                          }
+                          const text = line.replace(/^#+\s*/, '');
+                          elements.push(<h2 key={idx}>{text}</h2>);
+                        } else if (line.trim().startsWith('###')) {
+                          if (ulItems.length > 0) {
+                            elements.push(<ul key={`ul-${idx}`}>{ulItems}</ul>);
+                            ulItems = [];
+                          }
+                          const text = line.replace(/^#+\s*/, '');
+                          elements.push(<h3 key={idx}>{text}</h3>);
+                        } else if (line.trim().startsWith('-') || line.trim().startsWith('*')) {
+                          const text = line.replace(/^[-*]\s*/, '');
+                          ulItems.push(<li key={idx}>{text}</li>);
+                        } else if (line.trim() === '') {
+                          if (ulItems.length > 0) {
+                            elements.push(<ul key={`ul-${idx}`}>{ulItems}</ul>);
+                            ulItems = [];
+                          }
+                          elements.push(<div key={idx} style={{ height: '8px' }} />);
+                        } else if (line.trim()) {
+                          if (ulItems.length > 0) {
+                            elements.push(<ul key={`ul-${idx}`}>{ulItems}</ul>);
+                            ulItems = [];
+                          }
+                          elements.push(<p key={idx}>{line}</p>);
+                        }
+                      });
+
+                      if (ulItems.length > 0) {
+                        elements.push(<ul key="ul-final">{ulItems}</ul>);
+                      }
+
+                      return <div>{elements}</div>;
+                    })()
                   : 'Check the release page for details.'}
-                {release.body && release.body.length > 300 ? '...' : ''}
               </div>
             </div>
           </div>
 
-          <div className="update-modal-actions">
-            <button
-              className="btn btn-secondary"
-              onClick={handleCopyLink}
-              title="Copy changelog link"
-            >
-              {copied ? '✓ Copied!' : '📋 Copy Changelog Link'}
-            </button>
+          <p className="update-note">
             <button
               className="btn btn-primary"
-              onClick={handleOpenRelease}
-              title="View full changelog"
+              onClick={handleCopyLink}
+              title="Copy link to latest release"
             >
-              📖 View Full Changelog
+              {copied ? '✓ Copied!' : '📋 Copy Link to Latest Release'}
             </button>
-          </div>
-
-          <p className="update-note">
-            Download the latest version from{' '}
-            <a
-              href="https://github.com/Xenon1/NextUp/releases/latest"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub Releases
-            </a>
           </p>
         </div>
 
         <div className="update-modal-footer">
           <button className="btn btn-ghost" onClick={onClose}>
-            Remind Me Later
+            Close
           </button>
         </div>
       </div>
