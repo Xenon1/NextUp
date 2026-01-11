@@ -1,24 +1,32 @@
 #[tauri::command]
 fn get_config_path() -> Result<String, String> {
+  let data_dir = get_data_dir();
+  let config_path = data_dir.join("config.json");
+  
+  Ok(config_path.to_string_lossy().to_string())
+}
+
+fn get_data_dir() -> std::path::PathBuf {
   use std::path::PathBuf;
   
+  // Check for NEXTUP_DATA_DIR environment variable (for testing)
+  if let Ok(custom_dir) = std::env::var("NEXTUP_DATA_DIR") {
+    return PathBuf::from(custom_dir);
+  }
+  
+  // Default to ~/.nextup
   let home_dir = PathBuf::from(
     std::env::var("USERPROFILE").unwrap_or_else(|_| ".".to_string())
   );
-  let config_path = home_dir.join(".nextup").join("config.json");
-  
-  Ok(config_path.to_string_lossy().to_string())
+  home_dir.join(".nextup")
 }
 
 #[tauri::command]
 fn read_config() -> Result<String, String> {
   use std::fs;
-  use std::path::PathBuf;
   
-  let home_dir = PathBuf::from(
-    std::env::var("USERPROFILE").unwrap_or_else(|_| ".".to_string())
-  );
-  let config_path = home_dir.join(".nextup").join("config.json");
+  let data_dir = get_data_dir();
+  let config_path = data_dir.join("config.json");
   
   if !config_path.exists() {
     return Err("Config file not found".to_string());
@@ -30,12 +38,8 @@ fn read_config() -> Result<String, String> {
 #[tauri::command]
 fn write_config(content: String) -> Result<String, String> {
   use std::fs;
-  use std::path::PathBuf;
   
-  let home_dir = PathBuf::from(
-    std::env::var("USERPROFILE").unwrap_or_else(|_| ".".to_string())
-  );
-  let data_dir = home_dir.join(".nextup");
+  let data_dir = get_data_dir();
   
   // Create directory if it doesn't exist
   fs::create_dir_all(&data_dir).map_err(|e| e.to_string())?;
@@ -49,12 +53,8 @@ fn write_config(content: String) -> Result<String, String> {
 #[tauri::command]
 fn save_watchlist(data: String) -> Result<String, String> {
   use std::fs;
-  use std::path::PathBuf;
   
-  let home_dir = PathBuf::from(
-    std::env::var("USERPROFILE").unwrap_or_else(|_| ".".to_string())
-  );
-  let data_dir = home_dir.join(".nextup");
+  let data_dir = get_data_dir();
   
   // Create directory if it doesn't exist
   fs::create_dir_all(&data_dir).map_err(|e| e.to_string())?;
@@ -68,12 +68,8 @@ fn save_watchlist(data: String) -> Result<String, String> {
 #[tauri::command]
 fn load_watchlist() -> Result<String, String> {
   use std::fs;
-  use std::path::PathBuf;
   
-  let home_dir = PathBuf::from(
-    std::env::var("USERPROFILE").unwrap_or_else(|_| ".".to_string())
-  );
-  let data_dir = home_dir.join(".nextup");
+  let data_dir = get_data_dir();
   let file_path = data_dir.join("watchlist.json");
   
   if !file_path.exists() {
