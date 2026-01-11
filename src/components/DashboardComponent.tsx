@@ -410,10 +410,7 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
                       ))}
                     </select>
 
-                    <input
-                      type="number"
-                      min="0"
-                      max={((selectedItem.seasons || []).find(s => s.season === (selectedItem.currentSeason || 1))?.episodes) || 0}
+                    <select
                       value={selectedItem.currentEpisode || 0}
                       onChange={(e) => {
                         const updated = { ...selectedItem, currentEpisode: parseInt(e.target.value) || 0 };
@@ -421,8 +418,15 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
                         onUpdate(updated);
                         setSelectedItem(updated);
                       }}
-                      className="episode-input"
-                    />
+                      className="episode-select"
+                    >
+                      <option value={0}>Select Episode</option>
+                      {Array.from({ length: ((selectedItem.seasons || []).find(s => s.season === (selectedItem.currentSeason || 1))?.episodes) || 0 }).map((_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          Episode {i + 1}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               )}
