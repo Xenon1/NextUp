@@ -60,22 +60,12 @@ jobs:
             
             ${{ steps.changelog.outputs.content }}
             
-            ## Download
-            
-            - **Windows Installer (MSI)** - Run the installer to install NextUp
-            - **Portable EXE** - No installation needed, run directly
-            
             ## Installation Instructions
             
             ### MSI Installer
             1. Download `NextUp-${{ steps.tag_version.outputs.version }}.msi`
             2. Double-click to install
             3. Launch from Start Menu
-            
-            ### Portable EXE
-            1. Download `NextUp.exe`
-            2. Run directly (no installation needed)
-            3. Your data is stored in `~/.nextup/`
             
             ## What's New
             
