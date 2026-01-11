@@ -42,5 +42,17 @@ if (fs.existsSync(cargoPath)) {
   }
 }
 
+// Update App.tsx (APP_VERSION constant)
+const appTsxPath = path.join(projectRoot, 'src', 'App.tsx');
+if (fs.existsSync(appTsxPath)) {
+  let appTsx = fs.readFileSync(appTsxPath, 'utf8');
+  const oldAppVersion = appTsx.match(/const APP_VERSION = '([^']+)'/)?.[1];
+  if (oldAppVersion !== version) {
+    appTsx = appTsx.replace(/const APP_VERSION = '[^']+'/, `const APP_VERSION = '${version}'`);
+    fs.writeFileSync(appTsxPath, appTsx);
+    console.log(`✅ Updated App.tsx: ${version}`);
+  }
+}
+
 console.log(`\n🎉 Version synced to ${version}`);
 console.log(`📝 Don't forget to update CHANGELOG.md with release notes!`);
