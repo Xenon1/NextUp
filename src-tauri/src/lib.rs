@@ -9,16 +9,24 @@ fn get_config_path() -> Result<String, String> {
 fn get_data_dir() -> std::path::PathBuf {
   use std::path::PathBuf;
   
-  // Check for NEXTUP_DATA_DIR environment variable (for testing)
+  // Check for NEXTUP_DATA_DIR environment variable (explicit override)
   if let Ok(custom_dir) = std::env::var("NEXTUP_DATA_DIR") {
     return PathBuf::from(custom_dir);
   }
   
-  // Default to ~/.nextup
+  // Check if running in dev mode (set by npm run tauri-dev)
+  let is_dev = std::env::var("NEXTUP_DEV").is_ok();
+  
+  // Default directory
   let home_dir = PathBuf::from(
     std::env::var("USERPROFILE").unwrap_or_else(|_| ".".to_string())
   );
-  home_dir.join(".nextup")
+  
+  if is_dev {
+    home_dir.join(".nextup-dev")
+  } else {
+    home_dir.join(".nextup")
+  }
 }
 
 #[tauri::command]
