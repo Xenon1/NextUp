@@ -7,14 +7,8 @@ assignees: ''
 
 ---
 
-## Is Your Feature Related to a Problem?
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
-
-## Describe the Solution You'd Like
-A clear and concise description of what you want to happen.
-
-## Describe Alternatives You've Considered
-A clear and concise description of any alternative solutions or features you've considered.
+## Overview
+A clear and concise description of what you want
 
 ## Use Case
 Explain the use case and how this feature would improve the app:
