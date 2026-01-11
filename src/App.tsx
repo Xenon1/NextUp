@@ -107,10 +107,6 @@ function App() {
     return <ApiKeySetupModal onApiKeySet={handleApiKeySet} />
   }
 
-  const movieCount = getItemsForType('movie').length
-  const tvCount = getItemsForType('tv').length
-  const animeCount = getItemsForType('anime').length
-
   return (
     <div className="app">
       <header className="app-header">
@@ -132,19 +128,19 @@ function App() {
             className={`nav-tab ${activeTab === 'movies' ? 'active' : ''}`}
             onClick={() => setActiveTab('movies')}
           >
-            🎬 Movies {movieCount > 0 && <span className="tab-count">{movieCount}</span>}
+            🎬 Movies
           </button>
           <button
             className={`nav-tab ${activeTab === 'tv' ? 'active' : ''}`}
             onClick={() => setActiveTab('tv')}
           >
-            📺 TV Shows {tvCount > 0 && <span className="tab-count">{tvCount}</span>}
+            📺 TV Shows
           </button>
           <button
             className={`nav-tab ${activeTab === 'anime' ? 'active' : ''}`}
             onClick={() => setActiveTab('anime')}
           >
-            🎨 Anime {animeCount > 0 && <span className="tab-count">{animeCount}</span>}
+            🎨 Anime
           </button>
           <button
             className={`nav-tab ${activeTab === 'search' ? 'active' : ''}`}

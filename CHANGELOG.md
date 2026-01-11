@@ -23,7 +23,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.8] - 
 
+### Added
+- 
 
+### Changed
+- 
+
+### Fixed
+- 
+
+### Removed
+- [Ticket 13](https://github.com/Xenon1/NextUp/issues/13) - Removed counters in the navigation bar
 
 ---
 
