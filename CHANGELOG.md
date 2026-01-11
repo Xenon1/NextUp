@@ -27,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 
 
 ### Changed
-- 
+- [Ticket 8](https://github.com/Xenon1/NextUp/issues/8) - Altered text in in show and anime details from **Currently Watching** to **Last Episode Watched**
 
 ### Fixed
 - 

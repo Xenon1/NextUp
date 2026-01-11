@@ -118,7 +118,7 @@ const DetailPanel = ({
 
             {item.currentSeason && (item.currentEpisode ?? 0) > 0 && item.status !== 'completed' && (
               <div className="watch-status">
-                Currently watching: Season {item.currentSeason}, Episode {item.currentEpisode}
+                Last Episode Watched: Season {item.currentSeason}, Episode {item.currentEpisode}
               </div>
             )}
           </div>
