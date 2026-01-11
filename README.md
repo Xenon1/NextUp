@@ -2,7 +2,7 @@
 
 A beautiful Windows desktop application to track your movies, TV shows, and Anime. Built with Tauri, React and TypeScript
 
-**[Getting Started](#getting-started)** • **[Features](#features)**
+**[Getting Started](#getting-started)** • **[Features](#features)** • **[Releases](https://github.com/Xenon1/NextUp/releases)**
 
 ## Features
 
@@ -76,22 +76,17 @@ A beautiful Windows desktop application to track your movies, TV shows, and Anim
 5. Click **"Add to Watchlist"** to save it
 
 ### Manage Your Watchlist
-1. Click the **"📋 My Watchlist"** tab
+1. Click the **"🎬 Movie"**, **"📺 TV Shows" or **"🎨 Anime"**** tab
 2. Browse items organized by status
 3. **Change Status:** Click the status dropdown to update (Plan to Watch → Watching → Waiting for Next Ep, etc.)
 4. **Remove Items:** Click the trash icon or "Remove" button
-5. **Auto-Transitions:** TV shows automatically change status based on episode air dates
+5. **Status Breakdown:** Count of items in each status
+6. **Auto-Transitions:** TV shows automatically change status based on episode air dates
 
-### Dashboard
+### Up Next Dashboard
 The dashboard shows statistics:
 - **Up Next:** Items you're currently watching that haven't aired yet
 - **Airing Next:** Shows with upcoming episodes
-- **Status Breakdown:** Count of items in each status
-- **Average Rating:** Overall rating of your watchlist
-
-### Keyboard Shortcuts
-- Search field has auto-debouncing (300ms delay before API calls)
-- Click TMDB links to copy the URL to clipboard
 
 ## Project Structure
 
@@ -148,26 +143,12 @@ npm run lint             # Run ESLint checks
 
 ### Testing
 
-The project includes a comprehensive test suite with **76 tests**:
+The project includes a comprehensive test suit:
 
 ```bash
 npm run test -- --run   # Run all tests once
 npm run test:ui         # View tests in browser dashboard
 ```
-
-**Test Coverage:**
-- ✅ ApiKeySetupModal (6 tests)
-- ✅ SearchComponent (2 tests)
-- ✅ DashboardComponent (3 tests)
-- ✅ WatchlistComponent (5 tests)
-- ✅ TMDB Service (7 tests)
-- ✅ Config Service (5 tests)
-- ✅ Storage Service (4 tests)
-- ✅ Validation Utils (13 tests)
-- ✅ Helper Functions (12 tests)
-- ✅ Status Management (12 tests)
-
-See `TEST_SUITE_DOCUMENTATION.md` for detailed test information.
 
 ## Data Storage
 
@@ -196,17 +177,6 @@ This app uses the free tier of TMDB API. For more information:
 - **Website**: https://www.themoviedb.org/
 - **API Docs**: https://developers.themoviedb.org/3
 - **Rate Limit**: 40 requests per 10 seconds
-
-## Future Features
-
-Planned improvements:
-- 🎬 Trailers and streaming availability
-- 📊 Advanced filtering and sorting
-- ☁️ Cloud sync with account
-- 🎯 Recommendations based on your list
-- 📱 Mobile app version
-- 🌙 Dark/Light theme toggle
-- 📈 Statistics and analytics
 
 ## Troubleshooting
 
@@ -248,7 +218,7 @@ Found a bug or have an idea? Contributions are welcome!
 5. **Open** a Pull Request
 
 ### Development Guidelines
-- Run `npm run test -- --run` before submitting PR
+- Run `npm run test -- --run` and `npm run lint` before submitting PR
 - Ensure `npm run build` succeeds
 - Keep commit messages descriptive
 - Add tests for new features
@@ -259,18 +229,6 @@ Found a bug or have an idea? Contributions are welcome!
 - **Windows only** - Currently built for Windows (Tauri can be extended to macOS/Linux)
 - **TMDB free tier** - Limited to free API tier features
 - **Episode auto-tracking** - TV show status transitions based on air dates, not actual watching
-
-## Roadmap
-
-Future planned features:
-- 🌙 Light mode theme option
-- 📊 Advanced statistics and charts
-- 🎬 Integration with streaming platforms
-- 📱 Mobile app version
-- ☁️ Optional cloud sync with export/import
-- 🎯 Personalized recommendations
-- 📧 Email reminders for upcoming episodes
-
 ## License
 
 MIT License - Feel free to use this project for personal or commercial purposes. See LICENSE file for details.
@@ -282,12 +240,9 @@ MIT License - Feel free to use this project for personal or commercial purposes.
 - **Frontend**: [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
 - **Build Tool**: [Vite](https://vitejs.dev/) - Lightning-fast frontend build tool
 - **Testing**: [Vitest](https://vitest.dev/) - Unit testing framework
-- **Inspiration**: Modern watchlist/tracking applications
 
 ## Support & Questions
 
-- 📖 **Documentation:** Check [GITHUB_SETUP.md](GITHUB_SETUP.md) for GitHub setup, [QUICKSTART.md](QUICKSTART.md) for quick start
-- 🧪 **Tests:** See [TEST_SUITE_DOCUMENTATION.md](TEST_SUITE_DOCUMENTATION.md) for test details
 - 🐛 **Issues:** Open an issue on GitHub for bugs or features
 - 💬 **Discussions:** Use GitHub Discussions for questions or ideas
 
