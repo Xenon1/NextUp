@@ -12,11 +12,6 @@ A clear and concise description of the changes made in this PR.
 ## Related Issues
 Closes #(issue number)
 
-## Changes Made
-- Change 1
-- Change 2
-- Change 3
-
 ## How Has This Been Tested?
 Describe the tests you ran to verify the changes:
 - [ ] Unit tests added/updated
@@ -42,9 +37,3 @@ Steps to verify the changes:
 
 ## Screenshots (if applicable)
 Add screenshots or gifs demonstrating the changes.
-
-## Breaking Changes
-Describe any breaking changes and migration path:
-
-## Notes
-Any additional notes for reviewers.
