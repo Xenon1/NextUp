@@ -62,17 +62,15 @@ jobs:
             
             ## Installation Instructions
             
-            ### MSI Installer
-            1. Download `NextUp-${{ steps.tag_version.outputs.version }}.msi`
-            2. Double-click to install
-            3. Launch from Start Menu
+            1. Download `NextUp-${{ steps.tag_version.outputs.version }}.exe`
+            2. Double-click to run the installer
+            3. Launch from Start Menu after installation
             
             ## What's New
             
             See commits below for detailed changes.
           files: |
-            src-tauri/target/release/bundle/msi/*.msi
-            src-tauri/target/release/NextUp.exe
+            src-tauri/target/release/bundle/nsis/*.exe
           draft: false
           prerelease: false
         env:

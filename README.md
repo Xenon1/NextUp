@@ -39,6 +39,10 @@ A beautiful Windows desktop application to track your movies, TV shows, and Anim
 
 ### Installation
 
+Download the exe from the [Releases](https://github.com/Xenon1/NextUp/releases) page. 
+
+#### Development
+
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/Xenon1/NextUp.git
@@ -64,7 +68,7 @@ A beautiful Windows desktop application to track your movies, TV shows, and Anim
    ```bash
    npm run tauri-build
    ```
-   The installer will be in `src-tauri/target/release/bundle/msi/`
+   The EXE installer will be in `src-tauri/target/release/bundle/nsis/`
 
 ## Usage
 
