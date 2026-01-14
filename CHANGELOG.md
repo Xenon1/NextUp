@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Provides EXE installer instead of MSI
 
 ### Fixed
-- 
+- Fixed logic preventing episodes moving from watching to waiting for next episode
 
 ### Removed
 - [Ticket 13](https://github.com/Xenon1/NextUp/issues/13) - Removed counters in the navigation bar
