@@ -13,7 +13,7 @@ import tmdbService from './services/tmdbService'
 import releaseService from './services/releaseService'
 import './App.css'
 
-const APP_VERSION = '0.2.9'
+const APP_VERSION = '0.2.10'
 type TabType = 'dashboard' | 'search' | 'movies' | 'tv' | 'anime'
 
 function App() {
