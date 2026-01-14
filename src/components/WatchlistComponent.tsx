@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { WatchlistItem } from '../types';
 import { WatchlistStorage } from '../utils/watchlistStorage';
 import tmdbService from '../services/tmdbService';
+import { ConfirmDialog } from './ConfirmDialog';
 import './WatchlistComponent.css';
 
 interface WatchlistComponentProps {
@@ -150,6 +151,8 @@ const DetailPanel = ({
 export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: WatchlistComponentProps) {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [itemToRemove, setItemToRemove] = useState<string | null>(null);
+  
   const handleStatusChange = async (item: WatchlistItem, newStatus: 'plan-to-watch' | 'watching' | 'waiting-for-next-ep' | 'on-hold' | 'dropped' | 'completed') => {
     const updated = { ...item, status: newStatus };
     await WatchlistStorage.save(updated);
@@ -163,9 +166,14 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
   };
 
   const handleRemove = async (id: string) => {
-    if (confirm('Are you sure you want to remove this item?')) {
-      await WatchlistStorage.remove(id);
-      onRemove(id);
+    setItemToRemove(id);
+  };
+
+  const confirmRemove = async () => {
+    if (itemToRemove) {
+      await WatchlistStorage.remove(itemToRemove);
+      onRemove(itemToRemove);
+      setItemToRemove(null);
     }
   };
 
@@ -470,6 +478,18 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
           onCurrentSeasonChange={handleCurrentSeasonChange}
           onCurrentEpisodeChange={handleCurrentEpisodeChange}
           onIncrementEpisode={incrementEpisode}
+        />
+      )}
+
+      {itemToRemove && (
+        <ConfirmDialog
+          title="Remove from Watchlist"
+          message="Are you sure you want to remove this item? This action cannot be undone."
+          confirmLabel="Remove"
+          cancelLabel="Keep It"
+          isDangerous={true}
+          onConfirm={confirmRemove}
+          onCancel={() => setItemToRemove(null)}
         />
       )}
     </div>

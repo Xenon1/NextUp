@@ -4,6 +4,7 @@ import { WatchlistComponent } from './components/WatchlistComponent'
 import { DashboardComponent } from './components/DashboardComponent'
 import { ApiKeySetupModal } from './components/ApiKeySetupModal'
 import UpdateModal from './components/UpdateModal'
+import { NotificationProvider } from './components/NotificationContext'
 import type { WatchlistItem } from './types'
 import type { Release } from './services/releaseService'
 import { WatchlistStorage } from './utils/watchlistStorage'
@@ -186,4 +187,12 @@ function App() {
   )
 }
 
-export default App
+function AppWithNotifications() {
+  return (
+    <NotificationProvider>
+      <App />
+    </NotificationProvider>
+  )
+}
+
+export default AppWithNotifications
