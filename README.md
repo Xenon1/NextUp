@@ -2,7 +2,7 @@
 
 A beautiful Windows desktop application to track your movies, TV shows, and Anime. Built with Tauri, React and TypeScript
 
-**[Getting Started](#getting-started)** • **[Features](#features)** • **[Releases](https://github.com/Xenon1/NextUp/releases)**  **[Changelog](https://github.com/Xenon1/NextUp/blob/main/CHANGELOG.md)**
+**[Getting Started](#getting-started)** • **[Features](#features)** • **[Releases](https://github.com/Xenon1/NextUp/releases)** • **[Changelog](https://github.com/Xenon1/NextUp/blob/main/CHANGELOG.md)**
 
 ## Features
 
