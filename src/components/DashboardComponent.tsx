@@ -103,21 +103,26 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
       // Increment to next episode (the one user just watched)
       const nextEpisode = currentEpisode + 1;
       
-      // Check if the NEXT episode (that user will watch) has aired
-      let shouldWait = false;
+      // Check if the episode AFTER this one (that user will watch next) has aired
+      let newStatus = item.status;
       
-      if (nextEpisode <= seasonData.episodes) {
-        // There's another episode in this season, check if it has aired
-        const episodeDetails = await tmdbService.getEpisodeDetails(item.tmdbId, currentSeason, nextEpisode);
+      // We need to check the episode after the one they just watched
+      const episodeToCheck = nextEpisode + 1;
+      
+      if (episodeToCheck <= seasonData.episodes) {
+        // There's another episode after this one, check if it has aired
+        const episodeDetails = await tmdbService.getEpisodeDetails(item.tmdbId, currentSeason, episodeToCheck);
         const nextEpisodeAirDate = episodeDetails?.air_date;
         
         const today = new Date();
         const todayString = today.toISOString().split('T')[0];
         
         // If air date is in the future OR not available yet, wait for it
-        shouldWait = !nextEpisodeAirDate || nextEpisodeAirDate > todayString;
+        if (!nextEpisodeAirDate || nextEpisodeAirDate > todayString) {
+          newStatus = 'waiting-for-next-ep';
+        }
       } else {
-        // No more episodes in this season, check next season
+        // No more episodes in this season after the one they just watched, check next season
         const nextSeason = currentSeason + 1;
         if ((item.seasons || []).find(s => s.season === nextSeason)) {
           const episodeDetails = await tmdbService.getEpisodeDetails(item.tmdbId, nextSeason, 1);
@@ -127,14 +132,16 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
           const todayString = today.toISOString().split('T')[0];
           
           // If air date is in the future OR not available yet, wait for it
-          shouldWait = !nextEpisodeAirDate || nextEpisodeAirDate > todayString;
+          if (!nextEpisodeAirDate || nextEpisodeAirDate > todayString) {
+            newStatus = 'waiting-for-next-ep';
+          }
         }
       }
       
       const updated = { 
         ...item, 
         currentEpisode: nextEpisode,
-        status: shouldWait ? ('waiting-for-next-ep' as const) : item.status
+        status: newStatus
       };
       
       await WatchlistStorage.save(updated);
@@ -145,38 +152,25 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
       const nextSeasonData = (item.seasons || []).find(s => s.season === nextSeason);
       if (nextSeasonData) {
         // User has finished season, moving to season+1 episode 1
-        // Check if episode 2 of next season has aired (the one AFTER what they'll watch next)
-        const episodeToWatch = 1; // First episode of next season
-        const episodeToCheck = episodeToWatch + 1; // Check the one after
+        // Check if episode 1 of next season has aired
+        let newStatus = item.status;
         
-        let shouldWait = false;
+        const episodeDetails = await tmdbService.getEpisodeDetails(item.tmdbId, nextSeason, 1);
+        const firstEpisodeAirDate = episodeDetails?.air_date;
         
-        if (episodeToCheck <= (nextSeasonData.episodes || 0)) {
-          const episodeDetails = await tmdbService.getEpisodeDetails(item.tmdbId, nextSeason, episodeToCheck);
-          const nextEpisodeAirDate = episodeDetails?.air_date;
-          
-          const today = new Date();
-          const todayString = today.toISOString().split('T')[0];
-          
-          // If air date is in the future OR not available yet, wait for it
-          shouldWait = !nextEpisodeAirDate || nextEpisodeAirDate > todayString;
-        } else {
-          // Only 1 episode in next season, check that one
-          const episodeDetails = await tmdbService.getEpisodeDetails(item.tmdbId, nextSeason, 1);
-          const nextEpisodeAirDate = episodeDetails?.air_date;
-          
-          const today = new Date();
-          const todayString = today.toISOString().split('T')[0];
-          
-          // If air date is in the future OR not available yet, wait for it
-          shouldWait = !nextEpisodeAirDate || nextEpisodeAirDate > todayString;
+        const today = new Date();
+        const todayString = today.toISOString().split('T')[0];
+        
+        // If air date is in the future OR not available yet, wait for it
+        if (!firstEpisodeAirDate || firstEpisodeAirDate > todayString) {
+          newStatus = 'waiting-for-next-ep';
         }
         
         const updated = { 
           ...item, 
           currentSeason: nextSeason, 
           currentEpisode: 1,
-          status: shouldWait ? ('waiting-for-next-ep' as const) : item.status
+          status: newStatus
         };
         
         await WatchlistStorage.save(updated);
