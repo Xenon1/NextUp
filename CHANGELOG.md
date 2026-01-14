@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Ver] - Date
+## [0.2.9] - 2026-01-14
 
 ### Added
 - 
@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 
 
 ### Fixed
-- Fixed build errors
+- Fixed major issue where new version not being detected
 
 ### Removed
 - 

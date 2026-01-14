@@ -28,6 +28,13 @@ function App() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
+        // Clear release cache if app version changed
+        const lastSeenVersion = localStorage.getItem('nextup_app_version')
+        if (lastSeenVersion !== APP_VERSION) {
+          releaseService.clearCache()
+          localStorage.setItem('nextup_app_version', APP_VERSION)
+        }
+
         await configService.initialize()
         const apiKey = await configService.getApiKey()
         
