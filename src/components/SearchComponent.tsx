@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import type { TMDBMovie, TMDBTVShow, MediaType, WatchlistItem } from '../types';
 import tmdbService from '../services/tmdbService';
 import { WatchlistStorage } from '../utils/watchlistStorage';
+import { useNotification } from '../hooks/useNotification';
 import './SearchComponent.css';
 
 interface SearchComponentProps {
@@ -9,6 +10,7 @@ interface SearchComponentProps {
 }
 
 export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
+  const { notify } = useNotification();
   const [searchQuery, setSearchQuery] = useState('');
   const [mediaType, setMediaType] = useState<MediaType>('movie');
   const [results, setResults] = useState<(TMDBMovie | TMDBTVShow)[]>([]);
@@ -115,7 +117,7 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
     setSelectedItemForStatus(null);
 
     // Show feedback
-    alert(`"${watchlistItem.title}" added to your watchlist as ${status.replace('-', ' ')}!`);
+    notify(`"${watchlistItem.title}" added to your watchlist as ${status.replaceAll('-', ' ')}!`, 'success');
   };
 
   const isItemInWatchlist = (id: number): boolean => {
