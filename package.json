@@ -14,11 +14,10 @@
     "test:ui": "vitest --ui",
     "preview": "vite preview",
     "version": "npm run format:version && git add -A",
-    "release": "npm version",
+    "format:version": "node scripts/sync-version.js",
     "release:patch": "npm version patch",
     "release:minor": "npm version minor",
-    "release:major": "npm version major",
-    "format:version": "node scripts/sync-version.js"
+    "release:major": "npm version major"
   },
   "dependencies": {
     "@tauri-apps/plugin-shell": "^2.3.4",
