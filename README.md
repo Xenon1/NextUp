@@ -41,6 +41,8 @@ A beautiful Windows desktop application to track your movies, TV shows, and Anim
 
 Download the exe from the [Releases](https://github.com/Xenon1/NextUp/releases) page. 
 
+> ⚠️ **IMPORTANT: When updating, choose "Do not uninstall"** to preserve all your watchlist data and settings. Uninstalling before updating may result in data loss.
+
 #### Development
 
 1. **Clone the repository:**
