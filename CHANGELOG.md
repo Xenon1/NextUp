@@ -16,6 +16,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 
 
 ### Fixed
+- Fixed app version not bumping
+
+### Removed
+- 
+
+---
+
+## [0.2.9] - 2026-01-14
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
 - Fixed major issue where new version not being detected
 
 ### Removed
