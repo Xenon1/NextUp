@@ -28,12 +28,8 @@ function App() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        // Clear release cache if app version changed
-        const lastSeenVersion = localStorage.getItem('nextup_app_version')
-        if (lastSeenVersion !== APP_VERSION) {
-          releaseService.clearCache()
-          localStorage.setItem('nextup_app_version', APP_VERSION)
-        }
+        // Always clear cache on app launch for fresh update checks
+        releaseService.clearCache()
 
         await configService.initialize()
         const apiKey = await configService.getApiKey()
@@ -47,7 +43,7 @@ function App() {
         const saved = await WatchlistStorage.getAll()
         setWatchlist(saved)
 
-        // Check for updates
+        // Check for updates on every launch
         checkForUpdates()
       } catch (err) {
         console.error('Error initializing app:', err)

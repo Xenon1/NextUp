@@ -12,7 +12,6 @@ class ReleaseService {
   private static readonly REPO = 'Xenon1/NextUp';
   private static readonly GITHUB_API = 'https://api.github.com/repos';
   private static readonly CACHE_KEY = 'nextup_release_check';
-  private static readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
   /**
    * Parse version string to comparable format
@@ -66,24 +65,22 @@ class ReleaseService {
    * Check if a new version is available
    */
   static async checkForUpdate(currentVersion: string): Promise<Release | null> {
-    // Check cache first
-    const cached = localStorage.getItem(this.CACHE_KEY);
-    if (cached) {
-      const { release, timestamp } = JSON.parse(cached);
-      if (Date.now() - timestamp < this.CACHE_DURATION) {
-        const latestVersion = release.tag_name.replace(/^v/, '');
+    // Fetch latest release (no cache on first check for reliability)
+    const release = await this.getLatestRelease();
+    if (!release) {
+      // If fetch fails, check cache as fallback
+      const cached = localStorage.getItem(this.CACHE_KEY);
+      if (cached) {
+        const { release: cachedRelease } = JSON.parse(cached);
+        const latestVersion = cachedRelease.tag_name.replace(/^v/, '');
         if (this.compareVersions(currentVersion, latestVersion) < 0) {
-          return release;
+          return cachedRelease;
         }
-        return null;
       }
+      return null;
     }
 
-    // Fetch latest release
-    const release = await this.getLatestRelease();
-    if (!release) return null;
-
-    // Update cache
+    // Update cache for next time
     localStorage.setItem(
       this.CACHE_KEY,
       JSON.stringify({
