@@ -1,32 +1,20 @@
 ---
-name: Feature Request
-about: Suggest an idea for NextUp
-title: '[FEATURE] '
+name: Feature request
+about: Suggest an idea for this project
+title: "[FEATURE] "
 labels: enhancement
 assignees: ''
 
 ---
 
-## Overview
-A clear and concise description of what you want
+## Describe the feature
+A clear and concise description of the feature you'd like to see.
 
-## Use Case
-Explain the use case and how this feature would improve the app:
-- What problem does it solve?
-- Who would benefit?
-- How often would it be used?
+## Problem it solves
+What problem does this feature solve? Is it related to an issue?
 
-## Acceptance Criteria
-What needs to be true for this feature to be complete?
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+## Proposed solution
+Describe how you envision this feature working.
 
-## Additional Context
-Add any other context or mockups about the feature request here.
-
-## Feature Type
-- [ ] New functionality
-- [ ] UI/UX improvement
-- [ ] Performance improvement
-- [ ] Integration with external service
+## Additional context
+Add any other context, images, or examples about the feature request.
