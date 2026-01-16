@@ -150,7 +150,7 @@ function App() {
 
       <main className="app-main">
         {activeTab === 'dashboard' ? (
-          <DashboardComponent items={watchlist} onUpdate={handleUpdateItem} />
+          <DashboardComponent items={watchlist} onUpdate={handleUpdateItem} onRemove={handleRemoveItem} />
         ) : activeTab === 'search' ? (
           <SearchComponent onAddToWatchlist={handleAddToWatchlist} />
         ) : (

@@ -36,7 +36,7 @@ const DetailPanel = ({
   onCurrentEpisodeChange,
   onIncrementEpisode,
 }: DetailPanelProps) => (
-  <div className="detail-modal-overlay" onClick={onClose}>
+    <div className="detail-modal-overlay" onClick={onClose}>
     <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
       <button 
         className="detail-close-button" 
@@ -137,7 +137,6 @@ const DetailPanel = ({
         <button
           onClick={() => {
             onRemove(item.id);
-            onClose();
           }}
           className="remove-button"
         >
@@ -171,9 +170,11 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
 
   const confirmRemove = async () => {
     if (itemToRemove) {
-      await WatchlistStorage.remove(itemToRemove);
-      onRemove(itemToRemove);
+      const idToRemove = itemToRemove;
+      await WatchlistStorage.remove(idToRemove);
       setItemToRemove(null);
+      setSelectedItem(null); // Close the detail panel
+      onRemove(idToRemove); // Call parent callback after clearing local state
     }
   };
 
@@ -467,7 +468,7 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
         </div>
       )}
 
-      {selectedItem && (
+      {selectedItem && items.find(i => i.id === selectedItem) && (
         <DetailPanel
           item={items.find(i => i.id === selectedItem)!}
           mediaType={mediaType}

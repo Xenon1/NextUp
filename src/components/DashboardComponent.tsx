@@ -7,6 +7,7 @@ import './DashboardComponent.css';
 interface DashboardComponentProps {
   items: WatchlistItem[];
   onUpdate: (item: WatchlistItem) => void;
+  onRemove: (id: string) => void;
 }
 
 interface EpisodeAirInfo {
@@ -18,7 +19,7 @@ interface EpisodeAirInfo {
   posterPath: string | null;
 }
 
-export function DashboardComponent({ items, onUpdate }: DashboardComponentProps) {
+export function DashboardComponent({ items, onUpdate, onRemove }: DashboardComponentProps) {
   const [airingNextEpisodes, setAiringNextEpisodes] = useState<EpisodeAirInfo[]>([]);
   const [selectedItem, setSelectedItem] = useState<WatchlistItem | null>(null);
 
@@ -88,7 +89,7 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
     if (waitingItems.length > 0) {
       fetchAirDates();
     }
-  }, [waitingItems, onUpdate]);
+  }, [items]);
 
   const handleMarkWatched = async (item: WatchlistItem) => {
     const currentSeason = item.currentSeason || 1;
@@ -429,7 +430,7 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
                 className="detail-remove-button"
                 onClick={async () => {
                   await WatchlistStorage.remove(selectedItem.id);
-                  onUpdate(selectedItem);
+                  onRemove(selectedItem.id);
                   setSelectedItem(null);
                 }}
               >
