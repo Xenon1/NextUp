@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.1] - 2026-01-17
 
 ### Added
-- 
+- Added remove from watchlist confirmation to the up next page
 
 ### Changed
 - Media info by click on poster in Up Next now renders it in the center of the window

@@ -485,7 +485,7 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
         document.body
       )}
 
-      {itemToRemove && (
+      {itemToRemove && createPortal(
         <ConfirmDialog
           title="Remove from Watchlist"
           message="Are you sure you want to remove this item? This action cannot be undone."
@@ -494,7 +494,8 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
           isDangerous={true}
           onConfirm={confirmRemove}
           onCancel={() => setItemToRemove(null)}
-        />
+        />,
+        document.body
       )}
     </div>
   );
