@@ -64,17 +64,22 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                         const trimmed = line.trim().toLowerCase();
                         const isHeading = line.trim().startsWith('#');
 
-                        // Start capturing for WHAT'S NEW or WHAT'S CHANGED
-                        if (isHeading && (trimmed.includes("what's new") || trimmed.includes("what's changed"))) {
-                          captureContent = true;
-                          filtered.push(line);
-                        } 
-                        // Stop capturing when we hit a different heading
-                        else if (captureContent && isHeading && !trimmed.includes("what's new") && !trimmed.includes("what's changed")) {
-                          captureContent = false;
-                        }
-                        // Add content if we're in a capture section
-                        else if (captureContent) {
+                        // Start capturing for relevant sections
+                        if (isHeading) {
+                          if (trimmed.includes("what's new") || 
+                              trimmed.includes("what's changed") ||
+                              trimmed.includes("what's fixed") ||
+                              trimmed.includes("added") ||
+                              trimmed.includes("changed") ||
+                              trimmed.includes("fixed")) {
+                            captureContent = true;
+                            filtered.push(line);
+                          } else if (captureContent) {
+                            // Stop capturing when we hit a different heading
+                            captureContent = false;
+                          }
+                        } else if (captureContent) {
+                          // Add content if we're in a capture section
                           filtered.push(line);
                         }
                       }
