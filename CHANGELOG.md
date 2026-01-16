@@ -9,16 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.0] - YYYY-MM-DD
 
-### Added
+### What's New
+
 - 
 
-### Changed
+### What's Changed
+
 - 
 
-### Fixed
-- 
+### What's Fixed
 
-### Removed
 - 
 
 ---
