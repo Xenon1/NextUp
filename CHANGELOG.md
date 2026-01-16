@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 
 
 ### Changed
-- 
+- Media info by click on poster in Up Next now renders it in the center of the window
 
 ### Fixed
 - searching for show or anime and adding to watchlist now lets you select your current season and episode

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { WatchlistItem } from '../types';
 import { WatchlistStorage } from '../utils/watchlistStorage';
 import tmdbService from '../services/tmdbService';
@@ -469,7 +470,7 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
         </div>
       )}
 
-      {selectedItem && items.find(i => i.id === selectedItem) && (
+      {selectedItem && items.find(i => i.id === selectedItem) && createPortal(
         <DetailPanel
           item={items.find(i => i.id === selectedItem)!}
           mediaType={mediaType}
@@ -480,7 +481,8 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
           onCurrentSeasonChange={handleCurrentSeasonChange}
           onCurrentEpisodeChange={handleCurrentEpisodeChange}
           onIncrementEpisode={incrementEpisode}
-        />
+        />,
+        document.body
       )}
 
       {itemToRemove && (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { WatchlistItem } from '../types';
 import { WatchlistStorage } from '../utils/watchlistStorage';
 import tmdbService from '../services/tmdbService';
@@ -342,8 +343,9 @@ export function DashboardComponent({ items, onUpdate, onRemove }: DashboardCompo
       )}
 
       {selectedItem && (
-        <div className="detail-modal-overlay" onClick={() => setSelectedItem(null)}>
-          <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
+        createPortal(
+          <div className="detail-modal-overlay" onClick={() => setSelectedItem(null)}>
+            <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
             <button 
               className="detail-close-button" 
               onClick={() => setSelectedItem(null)}
@@ -438,7 +440,9 @@ export function DashboardComponent({ items, onUpdate, onRemove }: DashboardCompo
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
+        )
       )}
     </div>
   );
