@@ -113,13 +113,6 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <div className="header-content">
-          <h1>🎬 NextUp</h1>
-          <p className="subtitle">Your Personal Movie, TV Show & Anime Watchlist</p>
-        </div>
-      </header>
-
       <nav className="app-nav">
         <div className="nav-tabs">
           <button

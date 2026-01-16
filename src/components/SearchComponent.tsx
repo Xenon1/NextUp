@@ -109,10 +109,10 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
     }
 
     WatchlistStorage.save(watchlistItem);
-    
+
     // Update local watchlist IDs
     setWatchlistIds(prev => new Set([...prev, `${mediaType}-${item.id}`]));
-    
+
     onAddToWatchlist(watchlistItem);
     setSelectedItemForStatus(null);
 
@@ -125,124 +125,126 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
   };
 
   return (
-    <div className="search-container">
-      <div className="search-header">
-        <h2>Add to Watchlist</h2>
-        <p>Search for movies, TV shows, or anime to add to your list</p>
-      </div>
-
-      <div className="search-filters">
-        <div className="search-input-group">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search movies, TV shows, or anime..."
-            className="search-input"
-          />
-          {loading && <div className="search-loading">🔄</div>}
+    <>
+      <div className="search-container">
+        <div className="search-header">
+          <h2>Add to Watchlist</h2>
+          <p>Search for movies, TV shows, or anime to add to your list</p>
         </div>
 
-        <div className="media-type-selector">
-          <label>Type:</label>
-          <div className="type-buttons">
-            {(['movie', 'tv', 'anime'] as const).map((type) => (
-              <button
-                key={type}
-                onClick={() => {
-                  setMediaType(type);
-                  setResults([]);
-                  setPage(1);
-                }}
-                className={`type-button ${mediaType === type ? 'active' : ''}`}
-              >
-                {type === 'movie' ? '🎬 Movies' : type === 'tv' ? '📺 TV Shows' : '🎨 Anime'}
-              </button>
-            ))}
+        <div className="search-filters">
+          <div className="search-input-group">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search movies, TV shows, or anime..."
+              className="search-input"
+            />
+            {loading && <div className="search-loading">🔄</div>}
+          </div>
+
+          <div className="media-type-selector">
+            <label>Type:</label>
+            <div className="type-buttons">
+              {(['movie', 'tv', 'anime'] as const).map((type) => (
+                <button
+                  key={type}
+                  onClick={() => {
+                    setMediaType(type);
+                    setResults([]);
+                    setPage(1);
+                  }}
+                  className={`type-button ${mediaType === type ? 'active' : ''}`}
+                >
+                  {type === 'movie' ? '🎬 Movies' : type === 'tv' ? '📺 TV Shows' : '🎨 Anime'}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {error && <div className="error-message">{error}</div>}
+        {error && <div className="error-message">{error}</div>}
 
-      <div className="search-results">
-        {results.length > 0 ? (
-          <>
-            <div className="results-grid">
-              {results.map((item) => {
-                const isTVShow = 'name' in item;
-                const title = isTVShow ? item.name : item.title;
-                const releaseDate = isTVShow ? item.first_air_date : item.release_date;
-                const inWatchlist = isItemInWatchlist(item.id);
+        <div className="search-results">
+          {results.length > 0 ? (
+            <>
+              <div className="results-grid">
+                {results.map((item) => {
+                  const isTVShow = 'name' in item;
+                  const title = isTVShow ? item.name : item.title;
+                  const releaseDate = isTVShow ? item.first_air_date : item.release_date;
+                  const inWatchlist = isItemInWatchlist(item.id);
 
-                return (
-                  <div key={item.id} className="result-card">
-                    <div 
-                      className="poster-container"
-                      onClick={() => setSelectedSearchItem(item)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <img
-                        src={tmdbService.getImageUrl(item.poster_path || '')}
-                        alt={title}
-                        className="poster-image"
-                      />
-                      {inWatchlist && <div className="in-watchlist-badge">✓ In Watchlist</div>}
-                    </div>
-                    <div className="result-info">
-                      <h3 className="result-title">{title}</h3>
-                      {releaseDate && (
-                        <p className="result-date">{new Date(releaseDate).getFullYear()}</p>
-                      )}
-                      <div className="result-rating">
-                        <span className="rating-value">⭐ {item.vote_average.toFixed(1)}</span>
-                      </div>
-                      <p className="result-overview">{item.overview.substring(0, 100)}...</p>
-                      <button
-                        onClick={() => {
-                          setSelectedItemForStatus(item);
-                          setSelectedStatus('plan-to-watch');
-                        }}
-                        disabled={inWatchlist || loading}
-                        className={`add-button ${inWatchlist ? 'added' : ''}`}
+                  return (
+                    <div key={item.id} className="result-card">
+                      <div
+                        className="poster-container"
+                        onClick={() => setSelectedSearchItem(item)}
+                        style={{ cursor: 'pointer' }}
                       >
-                        {inWatchlist ? 'Added ✓' : '+ Add to Watchlist'}
-                      </button>
+                        <img
+                          src={tmdbService.getImageUrl(item.poster_path || '')}
+                          alt={title}
+                          className="poster-image"
+                        />
+                        {inWatchlist && <div className="in-watchlist-badge">✓ In Watchlist</div>}
+                      </div>
+                      <div className="result-info">
+                        <h3 className="result-title">{title}</h3>
+                        {releaseDate && (
+                          <p className="result-date">{new Date(releaseDate).getFullYear()}</p>
+                        )}
+                        <div className="result-rating">
+                          <span className="rating-value">⭐ {item.vote_average.toFixed(1)}</span>
+                        </div>
+                        <p className="result-overview">{item.overview.substring(0, 100)}...</p>
+                        <button
+                          onClick={() => {
+                            setSelectedItemForStatus(item);
+                            setSelectedStatus('plan-to-watch');
+                          }}
+                          disabled={inWatchlist || loading}
+                          className={`add-button ${inWatchlist ? 'added' : ''}`}
+                        >
+                          {inWatchlist ? 'Added ✓' : '+ Add to Watchlist'}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {totalPages > 1 && (
-              <div className="pagination">
-                <button
-                  onClick={() => handleSearch(page - 1)}
-                  disabled={page === 1 || loading}
-                  className="pagination-button"
-                >
-                  ← Previous
-                </button>
-                <span className="pagination-info">
-                  Page {page} of {totalPages}
-                </span>
-                <button
-                  onClick={() => handleSearch(page + 1)}
-                  disabled={page === totalPages || loading}
-                  className="pagination-button"
-                >
-                  Next →
-                </button>
+                  );
+                })}
               </div>
-            )}
-          </>
-        ) : (
-          !loading && results.length === 0 && searchQuery && (
-            <div className="no-results">
-              <p>No results found. Try a different search query.</p>
-            </div>
-          )
-        )}
+
+              {totalPages > 1 && (
+                <div className="pagination">
+                  <button
+                    onClick={() => handleSearch(page - 1)}
+                    disabled={page === 1 || loading}
+                    className="pagination-button"
+                  >
+                    ← Previous
+                  </button>
+                  <span className="pagination-info">
+                    Page {page} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => handleSearch(page + 1)}
+                    disabled={page === totalPages || loading}
+                    className="pagination-button"
+                  >
+                    Next →
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            !loading && results.length === 0 && searchQuery && (
+              <div className="no-results">
+                <p>No results found. Try a different search query.</p>
+              </div>
+            )
+          )}
+        </div>
       </div>
 
       {selectedItemForStatus && (
@@ -250,7 +252,6 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
           <div className="status-selector-modal" onClick={(e) => e.stopPropagation()}>
             <h3>Select Status</h3>
             <p>Choose a status for: <strong>{('name' in selectedItemForStatus ? selectedItemForStatus.name : selectedItemForStatus.title)}</strong></p>
-            
             <div className="status-options">
               <button
                 className={`status-option ${selectedStatus === 'plan-to-watch' ? 'selected' : ''}`}
@@ -314,13 +315,13 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
       {selectedSearchItem && (
         <div className="detail-modal-overlay" onClick={() => setSelectedSearchItem(null)}>
           <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="detail-close-button" 
+            <button
+              className="detail-close-button"
               onClick={() => setSelectedSearchItem(null)}
             >
               ✕
             </button>
-            
+
             <div className="detail-poster">
               <img
                 src={tmdbService.getImageUrl(selectedSearchItem.poster_path || '', 300)}
@@ -364,6 +365,6 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
