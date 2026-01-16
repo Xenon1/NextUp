@@ -7,7 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [3.0.0] - 2026-01-16
+## [0.3.1] - 2026-01-17
+
+### Added
+- Added remove from watchlist confirmation to the up next page
+
+### Changed
+- Media info by click on poster in Up Next now renders it in the center of the window
+
+### Fixed
+- searching for show or anime and adding to watchlist now lets you select your current season and episode
+- removing something from your watchlist no longer requires a app restart to see the change
+- Remove from watchlist button now renders in main watchlists
+
+### Removed
+- 
+
+---
+
+## [0.3.0] - 2026-01-16
 
 ### Added
 - Overhauled UI

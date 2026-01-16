@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { WatchlistItem } from '../types';
 import { WatchlistStorage } from '../utils/watchlistStorage';
+import { ConfirmDialog } from './ConfirmDialog';
 import tmdbService from '../services/tmdbService';
 import './DashboardComponent.css';
 
 interface DashboardComponentProps {
   items: WatchlistItem[];
   onUpdate: (item: WatchlistItem) => void;
+  onRemove: (id: string) => void;
 }
 
 interface EpisodeAirInfo {
@@ -18,9 +21,10 @@ interface EpisodeAirInfo {
   posterPath: string | null;
 }
 
-export function DashboardComponent({ items, onUpdate }: DashboardComponentProps) {
+export function DashboardComponent({ items, onUpdate, onRemove }: DashboardComponentProps) {
   const [airingNextEpisodes, setAiringNextEpisodes] = useState<EpisodeAirInfo[]>([]);
   const [selectedItem, setSelectedItem] = useState<WatchlistItem | null>(null);
+  const [itemToRemove, setItemToRemove] = useState<string | null>(null);
 
   // Get items that are being watched and have season/episode data
   const watchingItems = items.filter(
@@ -88,7 +92,7 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
     if (waitingItems.length > 0) {
       fetchAirDates();
     }
-  }, [waitingItems, onUpdate]);
+  }, [items]);
 
   const handleMarkWatched = async (item: WatchlistItem) => {
     const currentSeason = item.currentSeason || 1;
@@ -341,8 +345,9 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
       )}
 
       {selectedItem && (
-        <div className="detail-modal-overlay" onClick={() => setSelectedItem(null)}>
-          <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
+        createPortal(
+          <div className="detail-modal-overlay" onClick={() => setSelectedItem(null)}>
+            <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
             <button 
               className="detail-close-button" 
               onClick={() => setSelectedItem(null)}
@@ -427,17 +432,35 @@ export function DashboardComponent({ items, onUpdate }: DashboardComponentProps)
 
               <button
                 className="detail-remove-button"
-                onClick={async () => {
-                  await WatchlistStorage.remove(selectedItem.id);
-                  onUpdate(selectedItem);
+                onClick={() => {
                   setSelectedItem(null);
+                  setItemToRemove(selectedItem.id);
                 }}
               >
                 🗑️ Remove from Watchlist
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
+        )
+      )}
+
+      {itemToRemove && createPortal(
+        <ConfirmDialog
+          title="Remove from Watchlist"
+          message="Are you sure you want to remove this item? This action cannot be undone."
+          confirmLabel="Remove"
+          cancelLabel="Keep It"
+          isDangerous={true}
+          onConfirm={async () => {
+            await WatchlistStorage.remove(itemToRemove);
+            onRemove(itemToRemove);
+            setItemToRemove(null);
+          }}
+          onCancel={() => setItemToRemove(null)}
+        />,
+        document.body
       )}
     </div>
   );

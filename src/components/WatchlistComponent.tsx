@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { WatchlistItem } from '../types';
 import { WatchlistStorage } from '../utils/watchlistStorage';
 import tmdbService from '../services/tmdbService';
@@ -36,7 +37,7 @@ const DetailPanel = ({
   onCurrentEpisodeChange,
   onIncrementEpisode,
 }: DetailPanelProps) => (
-  <div className="detail-modal-overlay" onClick={onClose}>
+    <div className="detail-modal-overlay" onClick={onClose}>
     <div className="detail-modal" onClick={(e) => e.stopPropagation()}>
       <button 
         className="detail-close-button" 
@@ -137,9 +138,8 @@ const DetailPanel = ({
         <button
           onClick={() => {
             onRemove(item.id);
-            onClose();
           }}
-          className="remove-button"
+          className="detail-remove-button"
         >
           🗑️ Remove from Watchlist
         </button>
@@ -166,14 +166,17 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
   };
 
   const handleRemove = async (id: string) => {
+    setSelectedItem(null); // Close the detail panel immediately
     setItemToRemove(id);
   };
 
   const confirmRemove = async () => {
     if (itemToRemove) {
-      await WatchlistStorage.remove(itemToRemove);
-      onRemove(itemToRemove);
+      const idToRemove = itemToRemove;
+      await WatchlistStorage.remove(idToRemove);
       setItemToRemove(null);
+      setSelectedItem(null); // Close the detail panel
+      onRemove(idToRemove); // Call parent callback after clearing local state
     }
   };
 
@@ -467,7 +470,7 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
         </div>
       )}
 
-      {selectedItem && (
+      {selectedItem && items.find(i => i.id === selectedItem) && createPortal(
         <DetailPanel
           item={items.find(i => i.id === selectedItem)!}
           mediaType={mediaType}
@@ -478,10 +481,11 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
           onCurrentSeasonChange={handleCurrentSeasonChange}
           onCurrentEpisodeChange={handleCurrentEpisodeChange}
           onIncrementEpisode={incrementEpisode}
-        />
+        />,
+        document.body
       )}
 
-      {itemToRemove && (
+      {itemToRemove && createPortal(
         <ConfirmDialog
           title="Remove from Watchlist"
           message="Are you sure you want to remove this item? This action cannot be undone."
@@ -490,7 +494,8 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
           isDangerous={true}
           onConfirm={confirmRemove}
           onCancel={() => setItemToRemove(null)}
-        />
+        />,
+        document.body
       )}
     </div>
   );
