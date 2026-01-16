@@ -36,7 +36,7 @@ if (fs.existsSync(cargoPath)) {
   let cargo = fs.readFileSync(cargoPath, 'utf8');
   const oldVersion = cargo.match(/^version = "([^"]+)"/m)?.[1];
   if (oldVersion !== version) {
-    cargo = cargo.replace(/^version = "[^"]+"/, `version = "${version}"`);
+    cargo = cargo.replace(/^version = "[^"]+"/m, `version = "${version}"`);
     fs.writeFileSync(cargoPath, cargo);
     console.log(`✅ Updated Cargo.toml: ${version}`);
   }
