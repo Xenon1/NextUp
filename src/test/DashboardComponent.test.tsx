@@ -14,11 +14,13 @@ describe('DashboardComponent', () => {
   it('should render dashboard section', async () => {
     const { DashboardComponent: DashboardComponentImport } = await import('../components/DashboardComponent');
     const mockCallback = vi.fn();
+    const mockRemoveCallback = vi.fn();
     
     render(
       <DashboardComponentImport 
         items={[]} 
         onUpdate={mockCallback}
+        onRemove={mockRemoveCallback}
       />
     );
     
