@@ -70,6 +70,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.1);
 }
 
 .version-info {
@@ -140,14 +141,21 @@
 
 .update-actions {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(251, 191, 36, 0.1);
+  width: 100%;
 }
 
-.update-button, .skip-button {
-  flex: 1;
+.update-modal-footer {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.update-button, .skip-button, .btn {
+  width: 100%;
   padding: 0.85rem;
   border: none;
   border-radius: 10px;

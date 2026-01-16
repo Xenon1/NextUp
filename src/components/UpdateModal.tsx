@@ -132,18 +132,16 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
             </div>
           </div>
 
-          <p className="update-note">
-            <button
-              className="btn btn-primary"
-              onClick={handleCopyLink}
-              title="Copy link to latest release"
-            >
-              {copied ? '✓ Copied!' : '📋 Copy Link to Latest Release'}
-            </button>
-          </p>
         </div>
 
         <div className="update-modal-footer">
+          <button
+            className="btn btn-primary"
+            onClick={handleCopyLink}
+            title="Copy link to latest release"
+          >
+            {copied ? '✓ Copied!' : '📋 Copy Link to Latest Release'}
+          </button>
           <button className="btn btn-ghost" onClick={onClose}>
             Close
           </button>
