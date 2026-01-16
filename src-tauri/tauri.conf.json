@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "nextup",
-  "version": "0.3.2",
+  "version": "0.3.0",
   "identifier": "com.nextup.app",
   "build": {
     "frontendDist": "../build",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "nextup",
+        "title": "Next Up",
         "width": 1200,
         "height": 800,
         "resizable": true,
