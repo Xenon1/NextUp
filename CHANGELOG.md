@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - searching for show or anime and adding to watchlist now lets you select your current season and episode
 - removing something from your watchlist no longer requires a app restart to see the change
+- Remove from watchlist button now renders in main watchlists
 
 ### Removed
 - 

@@ -138,7 +138,7 @@ const DetailPanel = ({
           onClick={() => {
             onRemove(item.id);
           }}
-          className="remove-button"
+          className="detail-remove-button"
         >
           🗑️ Remove from Watchlist
         </button>
@@ -165,6 +165,7 @@ export function WatchlistComponent({ items, mediaType, onUpdate, onRemove }: Wat
   };
 
   const handleRemove = async (id: string) => {
+    setSelectedItem(null); // Close the detail panel immediately
     setItemToRemove(id);
   };
 
