@@ -22,6 +22,10 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
   const [selectedStatus, setSelectedStatus] = useState<'plan-to-watch' | 'watching' | 'waiting-for-next-ep' | 'on-hold' | 'dropped' | 'completed'>('plan-to-watch');
   const [watchlistIds, setWatchlistIds] = useState<Set<string>>(new Set());
   const [selectedSearchItem, setSelectedSearchItem] = useState<TMDBMovie | TMDBTVShow | null>(null);
+  const [selectedSeason, setSelectedSeason] = useState<number>(1);
+  const [selectedEpisode, setSelectedEpisode] = useState<number>(0);
+  const [totalSeasons, setTotalSeasons] = useState<number>(0);
+  const [seasonData, setSeasonData] = useState<any[]>([]);
 
   // Load watchlist IDs on mount
   useEffect(() => {
@@ -98,10 +102,8 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
       try {
         const seasonData = await tmdbService.getTVShowWithSeasons(item.id);
         watchlistItem.seasons = seasonData.seasons;
-        if (seasonData.seasons.length > 0) {
-          watchlistItem.currentSeason = 1;
-          watchlistItem.currentEpisode = 0;
-        }
+        watchlistItem.currentSeason = selectedSeason;
+        watchlistItem.currentEpisode = selectedEpisode;
       } catch (err) {
         console.error('Failed to fetch season data:', err);
         // Continue anyway, seasons can be added manually
@@ -122,6 +124,33 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
 
   const isItemInWatchlist = (id: number): boolean => {
     return watchlistIds.has(`${mediaType}-${id}`);
+  };
+
+  // Handle detail modal opening
+  const handleOpenDetailModal = async (item: TMDBMovie | TMDBTVShow) => {
+    setSelectedSearchItem(item);
+    
+    // Fetch season data for TV shows and anime
+    if ((mediaType === 'tv' || mediaType === 'anime') && 'name' in item) {
+      try {
+        const data = await tmdbService.getTVShowWithSeasons(item.id);
+        // Filter out season 0 (specials) and get the count of actual seasons
+        const actualSeasons = data.seasons.filter((s: any) => s.season > 0);
+        setSeasonData(actualSeasons);
+        setTotalSeasons(actualSeasons.length);
+        setSelectedSeason(actualSeasons.length > 0 ? 1 : 0);
+        setSelectedEpisode(0);
+      } catch (err) {
+        console.error('Failed to fetch season data:', err);
+        setSeasonData([]);
+        setTotalSeasons(0);
+        setSelectedSeason(1);
+        setSelectedEpisode(0);
+      }
+    } else {
+      setSeasonData([]);
+      setTotalSeasons(0);
+    }
   };
 
   return (
@@ -180,7 +209,7 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
                     <div key={item.id} className="result-card">
                       <div
                         className="poster-container"
-                        onClick={() => setSelectedSearchItem(item)}
+                        onClick={() => handleOpenDetailModal(item)}
                         style={{ cursor: 'pointer' }}
                       >
                         <img
@@ -350,6 +379,57 @@ export function SearchComponent({ onAddToWatchlist }: SearchComponentProps) {
                   <option value="completed">✅ Completed</option>
                 </select>
               </div>
+
+              {(mediaType === 'tv' || mediaType === 'anime') && (
+                <div className="detail-episode-tracker">
+                  <label>Current Progress:</label>
+                  <div className="episode-controls">
+                    <div className="episode-input">
+                      <label htmlFor="season-select">Season:</label>
+                      <select
+                        id="season-select"
+                        value={selectedSeason}
+                        onChange={(e) => {
+                          setSelectedSeason(parseInt(e.target.value));
+                          setSelectedEpisode(0); // Reset episode when season changes
+                        }}
+                        className="season-select"
+                        disabled={totalSeasons === 0}
+                      >
+                        {totalSeasons > 0 ? (
+                          Array.from({ length: totalSeasons }, (_, i) => i + 1).map((season) => (
+                            <option key={season} value={season}>
+                              Season {season}
+                            </option>
+                          ))
+                        ) : (
+                          <option value="1">Season 1</option>
+                        )}
+                      </select>
+                    </div>
+                    <div className="episode-input">
+                      <label htmlFor="episode-select">Episode:</label>
+                      <select
+                        id="episode-select"
+                        value={selectedEpisode}
+                        onChange={(e) => setSelectedEpisode(parseInt(e.target.value))}
+                        className="episode-select"
+                        disabled={totalSeasons === 0}
+                      >
+                        {(() => {
+                          const currentSeason = seasonData.find((s: any) => s.season === selectedSeason);
+                          const episodeCount = currentSeason?.episodes || 0;
+                          const options = [<option key="0" value="0">Episode 0</option>];
+                          for (let i = 1; i <= episodeCount; i++) {
+                            options.push(<option key={i} value={i}>Episode {i}</option>);
+                          }
+                          return options;
+                        })()}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <button
                 className="confirm-button"

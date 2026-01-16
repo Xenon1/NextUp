@@ -7,7 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [3.0.0] - 2026-01-16
+## [0.3.1] - 2026-01-17
+
+### Added
+- 
+
+### Changed
+- 
+
+### Fixed
+- searching for show or anime and adding to watchlist now lets you select your current season and episode
+
+### Removed
+- 
+
+---
+
+## [0.3.0] - 2026-01-16
 
 ### Added
 - Overhauled UI
