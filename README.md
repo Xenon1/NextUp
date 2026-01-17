@@ -1,32 +1,17 @@
 # 🎬 NextUp - Watch List Tracker
 
-A beautiful Windows desktop application to track your movies, TV shows, and Anime. Built with Tauri, React and TypeScript
+A Windows desktop application to track your movies, TV shows, and Anime. All open source, free forever and all data stored locally in a JSON
 
-**[Getting Started](#getting-started)** • **[Features](#features)** • **[Releases](https://github.com/Xenon1/NextUp/releases)** • **[Changelog](https://github.com/Xenon1/NextUp/blob/main/CHANGELOG.md)**
+**[Getting Started](#getting-started)** • **[Usage](#usage)** • **[Releases](https://github.com/Xenon1/NextUp/releases)** • **[Changelog](https://github.com/Xenon1/NextUp/blob/main/CHANGELOG.md)**
 
 ## Features
 
 ✨ **Key Features:**
-- 🔍 **Search & Discover** - Real-time search for movies, TV shows, and anime powered by TMDB
+- 🔍 **Search & Discover** - Real-time search for movies, TV shows, and anime 
 - 📋 **Smart Status System** - 6 statuses: Plan to Watch, Watching, Waiting for Next Ep, On Hold, Dropped, Completed
-- 📺 **Episode Tracking** - Built-in tracking for TV show and anime seasons/episodes
 - 🎬 **Auto-Transitions** - TV shows automatically transition to "Waiting for Next Episode" based on air dates
 - 💾 **Complete Privacy** - All data stored locally (no cloud, no accounts, no tracking)
 - 🔐 **Secure API Key Management** - First-run setup modal, config stored locally, never exposed
-- ⚡ **Real-time Search** - Debounced search with instant results
-
-## Tech Stack
-
-- **Desktop Framework:** Tauri 2.9.5 (secure, lightweight)
-- **Frontend:** React 19.2.0 + TypeScript 5.9.3
-- **Build Tool:** Vite 7.3.1 (lightning-fast builds)
-- **Backend:** Rust (performance & security)
-- **Testing:** Vitest 4.0.16 with @testing-library/react (76 tests, all passing)
-- **HTTP Client:** Axios (API requests)
-- **API:** The Movie Database (TMDB) v3
-- **Storage:** Local JSON files (~/.nextup/config.json, ~/.nextup/watchlist.json)
-- **Styling:** CSS3 with dark mode
-- **Linting:** ESLint with TypeScript support
 
 ## Getting Started
 
@@ -88,10 +73,10 @@ Download the exe from the [Releases](https://github.com/Xenon1/NextUp/releases) 
 4. **Remove Items:** Click the trash icon or "Remove" button
 5. **Status Breakdown:** Count of items in each status
 6. **Auto-Transitions:** TV shows automatically change status based on episode air dates
+7. **Filter on Status:** Click the main status overviews at the top to filter for a specific status
 
 ### Up Next Dashboard
-The dashboard shows statistics:
-- **Up Next:** Items you're currently watching that haven't aired yet
+- **Up Next:** Items you're currently watching
 - **Airing Next:** Shows with upcoming episodes
 
 ## Project Structure
@@ -230,22 +215,10 @@ Found a bug or have an idea? Contributions are welcome!
 - Add tests for new features
 - Update README if adding new features
 
-## Known Limitations
-
-- **Windows only** - Currently built for Windows (Tauri can be extended to macOS/Linux)
-- **TMDB free tier** - Limited to free API tier features
-- **Episode auto-tracking** - TV show status transitions based on air dates, not actual watching
 ## License
 
 MIT License - Feel free to use this project for personal or commercial purposes. See LICENSE file for details.
 
-## Credits & Attributions
-
-- **Movie Database**: [The Movie Database (TMDB)](https://www.themoviedb.org/) - All movie, TV, and anime data
-- **Framework**: [Tauri](https://tauri.app/) - Secure, lightweight desktop framework
-- **Frontend**: [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- **Build Tool**: [Vite](https://vitejs.dev/) - Lightning-fast frontend build tool
-- **Testing**: [Vitest](https://vitest.dev/) - Unit testing framework
 
 ## Support & Questions
 
