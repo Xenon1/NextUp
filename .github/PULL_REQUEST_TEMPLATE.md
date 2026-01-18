@@ -8,7 +8,7 @@ Please include a summary of the changes and related context.
 - [ ] Documentation update
 
 ## Related Issues
-Fixes #(issue number)
+Addresses #(issue number)
 
 ## How has this been tested?
 Please describe the tests you ran and how to reproduce them.
